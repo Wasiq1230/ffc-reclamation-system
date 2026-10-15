@@ -2,7 +2,10 @@ import io
 import re
 from typing import Dict, Any, Optional, List
 from PIL import Image, ImageOps, ImageEnhance
-import winocr
+try:
+    import winocr
+except ImportError:
+    winocr = None
 from sqlalchemy.orm import Session
 
 from backend.app.models.organization import Plant, Department
@@ -61,6 +64,8 @@ def _prepare_pil_image(image_bytes: bytes) -> Image.Image:
 async def extract_text_from_image_async(image_bytes: bytes) -> str:
     """Run native Windows Hardware-Accelerated OCR on an image (async) with multi-zone capture,
     EXIF orientation auto-transpose, and multi-angle rotation recovery."""
+    if winocr is None:
+        return ""
     try:
         pil_img = _prepare_pil_image(image_bytes)
 
@@ -101,6 +106,8 @@ async def extract_text_from_image_async(image_bytes: bytes) -> str:
 def extract_text_from_image(image_bytes: bytes) -> str:
     """Run native Windows Hardware-Accelerated OCR on an image (sync) with multi-zone capture,
     EXIF orientation auto-transpose, and multi-angle rotation recovery."""
+    if winocr is None:
+        return ""
     try:
         pil_img = _prepare_pil_image(image_bytes)
 
