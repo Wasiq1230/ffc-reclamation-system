@@ -5,13 +5,13 @@ const config: CapacitorConfig = {
   appName: 'FFC Reclamation',
   webDir: 'out',
   server: {
-    url: 'http://192.168.100.180:3000',
-    cleartext: true,
+    url: 'https://ffc-reclamation-system.vercel.app',
+    cleartext: false,
   },
   android: {
     allowMixedContent: true,
     captureInput: true,
-    webContentsDebuggingEnabled: true,
+    webContentsDebuggingEnabled: false,
   },
 };
 
