@@ -22,6 +22,7 @@ import {
   UploadCloud
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
+import ConfirmModal from "@/components/ConfirmModal";
 import { registerCloseHandler } from "@/lib/modalRegistry";
 
 export default function RegisterReclamationPage() {
@@ -81,6 +82,7 @@ export default function RegisterReclamationPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Load plants, customers, techs & query parameters
   useEffect(() => {
@@ -215,28 +217,34 @@ export default function RegisterReclamationPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
+  const handleRequestSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setError(null);
 
     if (!valveDescription.trim()) {
       setError("Valve Description is required.");
-      setSubmitting(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
     if ((source === "PLANT_1" || source === "PLANT_2") && (!plantId || !departmentId)) {
       setError("Plant and Department are required for FFC jobs.");
-      setSubmitting(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
     if (source === "EXTERNAL" && !externalCustomerId) {
       setError("External Customer is required for Miscellaneous / External jobs.");
-      setSubmitting(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
+
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmSubmit = async () => {
+    setSubmitting(true);
+    setError(null);
 
     try {
       const payload: any = {
@@ -291,9 +299,12 @@ export default function RegisterReclamationPage() {
         );
       }
 
+      setShowConfirmModal(false);
       router.push(`/jobs/${newJob.id}`);
     } catch (err: any) {
       setError(err.message || "Failed to register reclamation job.");
+      setShowConfirmModal(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setSubmitting(false);
     }
@@ -313,7 +324,8 @@ export default function RegisterReclamationPage() {
               Cancel
             </Link>
             <button
-              onClick={handleSubmit}
+              type="button"
+              onClick={() => handleRequestSubmit()}
               disabled={submitting}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-2xs disabled:opacity-50"
             >
@@ -367,7 +379,7 @@ export default function RegisterReclamationPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleRequestSubmit} className="space-y-6">
         {/* Section 1: Source & Priority */}
         <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -719,18 +731,19 @@ export default function RegisterReclamationPage() {
           </div>
         </div>
 
-        {/* Action Buttons: Sticky at bottom on mobile, static on desktop */}
-        <div className="sticky bottom-16 sm:static z-20 bg-white/95 sm:bg-transparent backdrop-blur-md sm:backdrop-blur-none p-3 sm:p-0 border-t sm:border-t-0 border-slate-200/90 rounded-2xl sm:rounded-none shadow-lg sm:shadow-none flex items-center justify-end gap-3 pt-3">
+        {/* Action Buttons: Clean, ergonomic position with safe-area padding away from system gesture/nav bar */}
+        <div className="pt-6 pb-28 sm:pb-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-slate-200">
           <Link
             href="/jobs"
-            className="px-4 py-2.5 min-h-[44px] flex items-center justify-center text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 active:scale-95 transition"
+            className="px-5 py-3 min-h-[48px] flex items-center justify-center text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 active:scale-95 transition"
           >
             Cancel
           </Link>
           <button
-            type="submit"
+            type="button"
+            onClick={() => handleRequestSubmit()}
             disabled={submitting}
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 min-h-[48px] text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md active:scale-95 disabled:opacity-50 flex-1 sm:flex-initial"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[48px] text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md active:scale-95 disabled:opacity-50"
           >
             {submitting ? (
               <>
@@ -746,6 +759,63 @@ export default function RegisterReclamationPage() {
           </button>
         </div>
       </form>
+
+      {/* Registration Confirmation Dialog to prevent accidental taps/double submissions */}
+      <ConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => !submitting && setShowConfirmModal(false)}
+        onConfirm={handleConfirmSubmit}
+        title="Confirm Valve Registration"
+        message="Please verify the valve registration details before generating a permanent tracking ID."
+        confirmLabel={submitting ? "Registering..." : "Confirm & Register"}
+        cancelLabel="Review Form"
+        isDestructive={false}
+        isLoading={submitting}
+        details={
+          <div className="bg-slate-50 rounded-xl p-3.5 space-y-2 border border-slate-200 text-xs">
+            <div className="flex justify-between items-start gap-2">
+              <span className="text-slate-500 shrink-0">Valve:</span>
+              <span className="font-semibold text-slate-800 text-right">{valveDescription || "—"}</span>
+            </div>
+            <div className="flex justify-between items-start gap-2">
+              <span className="text-slate-500 shrink-0">Origin / Source:</span>
+              <span className="font-semibold text-slate-800 text-right">
+                {source === "EXTERNAL"
+                  ? customers.find((c) => c.id === Number(externalCustomerId))?.company_name || "External Customer"
+                  : `${plants.find((p) => p.id === Number(plantId))?.name || "Plant"} · ${
+                      departments.find((d) => d.id === Number(departmentId))?.name || "Department"
+                    }`}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500">Priority:</span>
+              <span
+                className={`font-bold px-2 py-0.5 rounded text-[10px] ${
+                  priority === "EMERGENCY"
+                    ? "bg-rose-100 text-rose-800"
+                    : priority === "HIGH"
+                    ? "bg-amber-100 text-amber-800"
+                    : "bg-emerald-100 text-emerald-800"
+                }`}
+              >
+                {priority}
+              </span>
+            </div>
+            {notificationNo && (
+              <div className="flex justify-between">
+                <span className="text-slate-500">Notification No:</span>
+                <span className="font-medium text-slate-700">{notificationNo}</span>
+              </div>
+            )}
+            {beforePhotoFile && (
+              <div className="flex justify-between">
+                <span className="text-slate-500">Before Photo:</span>
+                <span className="font-medium text-emerald-700">Attached ({beforePhotoFile.name})</span>
+              </div>
+            )}
+          </div>
+        }
+      />
 
       {/* Live Camera Modal */}
       {showCameraModal && (

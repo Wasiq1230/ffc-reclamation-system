@@ -16,7 +16,8 @@ import {
   ArrowLeft,
   Eye,
   Edit3,
-  PenTool
+  PenTool,
+  RefreshCw
 } from "lucide-react";
 import SignatureCanvas from "@/components/SignatureCanvas";
 
@@ -41,6 +42,20 @@ export default function CertificateEditorPage() {
 
   // Signature modal
   const [showSignatureModal, setShowSignatureModal] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    if (!cert) return;
+    setDownloadingPdf(true);
+    try {
+      await api.downloadCertificatePdf(cert.id, cert.certificate_number);
+    } catch (err: any) {
+      console.error("PDF download error:", err);
+      alert("Failed to download PDF: " + (err.message || "Unknown error"));
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
 
   const fetchCert = async () => {
     setLoading(true);
@@ -252,15 +267,20 @@ export default function CertificateEditorPage() {
             </button>
           )}
 
-          <a
-            href={`http://127.0.0.1:8000/api/certificates/${cert.id}/pdf`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3 py-1.5 bg-slate-900 text-white rounded font-semibold hover:bg-slate-800 flex items-center gap-1.5 shadow-2xs transition-colors"
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={downloadingPdf}
+            className="px-3 py-1.5 bg-slate-900 text-white rounded font-semibold hover:bg-slate-800 flex items-center gap-1.5 shadow-2xs transition-colors disabled:opacity-50"
+            title="Download PDF"
           >
-            <FileDown className="w-3.5 h-3.5 text-emerald-400" />
-            Download PDF
-          </a>
+            {downloadingPdf ? (
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+            ) : (
+              <FileDown className="w-3.5 h-3.5 text-emerald-400" />
+            )}
+            <span>{downloadingPdf ? "Saving..." : "Download PDF"}</span>
+          </button>
 
           <button
             onClick={() => window.print()}

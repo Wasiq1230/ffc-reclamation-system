@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  minimumScale: 0.5,
   maximumScale: 5,
   userScalable: true,
   viewportFit: "cover",
@@ -24,9 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-      </head>
       <body className="min-h-[100dvh] h-[100dvh] overflow-x-hidden bg-slate-100 text-slate-900 font-sans antialiased" suppressHydrationWarning>
         <Suspense fallback={null}>
           <AppLayoutShell>{children}</AppLayoutShell>

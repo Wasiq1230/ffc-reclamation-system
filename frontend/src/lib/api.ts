@@ -383,6 +383,55 @@ export const api = {
     return `${API_BASE}/certificates/${certId}/pdf?token=${token || ""}`;
   },
 
+  async downloadCertificatePdf(certId: number, certNumber: string = "CERTIFICATE") {
+    const token = getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const downloadUrl = `${API_BASE}/certificates/${certId}/pdf${token ? `?token=${encodeURIComponent(token)}` : ""}`;
+    const res = await fetch(downloadUrl, { headers });
+
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "");
+      throw new Error(`Failed to download certificate PDF (${res.status}): ${errText || res.statusText}`);
+    }
+
+    const blob = await res.blob();
+    const safeFileName = `${certNumber.replace(/[^a-zA-Z0-9_-]/g, "_")}.pdf`;
+
+    // 1. Android Native Scoped Storage & PDF Viewer via AndroidDownloader
+    if (typeof window !== "undefined" && (window as any).AndroidDownloader?.saveAndOpenPdf) {
+      return new Promise<void>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          try {
+            const base64Data = reader.result as string;
+            (window as any).AndroidDownloader.saveAndOpenPdf(base64Data, safeFileName);
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        };
+        reader.onerror = () => reject(new Error("Failed to process certificate file data"));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    // 2. Standard Web Browser In-App Download (Desktop & Web)
+    if (typeof window !== "undefined") {
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = safeFileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1000);
+    }
+  },
+
   // Reports & Dashboard
   async getDashboard(date_from?: string, date_to?: string) {
     const q = new URLSearchParams();

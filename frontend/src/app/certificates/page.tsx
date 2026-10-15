@@ -16,7 +16,8 @@ import {
   ChevronRight,
   ShieldCheck,
   RefreshCw,
-  Download
+  Download,
+  AlertCircle
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 
@@ -29,6 +30,24 @@ export default function CertificatesListPage() {
   const [pages, setPages] = useState(1);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
+  const [downloadingId, setDownloadingId] = useState<number | null>(null);
+  const [downloadMsg, setDownloadMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const handleDownloadPdf = async (certId: number, certNumber: string) => {
+    setDownloadingId(certId);
+    setDownloadMsg(null);
+    try {
+      await api.downloadCertificatePdf(certId, certNumber);
+      setDownloadMsg({ type: "success", text: `Certificate ${certNumber} downloaded successfully!` });
+      setTimeout(() => setDownloadMsg(null), 4000);
+    } catch (err: any) {
+      console.error("PDF download error:", err);
+      setDownloadMsg({ type: "error", text: err.message || "Failed to download PDF certificate." });
+      setTimeout(() => setDownloadMsg(null), 5000);
+    } finally {
+      setDownloadingId(null);
+    }
+  };
 
   const fetchCerts = async () => {
     setLoading(true);
@@ -80,6 +99,24 @@ export default function CertificatesListPage() {
           </button>
         }
       />
+
+      {/* Download Status Notification */}
+      {downloadMsg && (
+        <div
+          className={`p-3.5 rounded-xl border text-xs font-semibold flex items-center gap-2 animate-in fade-in duration-200 ${
+            downloadMsg.type === "success"
+              ? "bg-emerald-50 text-emerald-900 border-emerald-200"
+              : "bg-rose-50 text-rose-900 border-rose-200"
+          }`}
+        >
+          {downloadMsg.type === "success" ? (
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          ) : (
+            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+          )}
+          <span>{downloadMsg.text}</span>
+        </div>
+      )}
 
       {/* Filter Strip */}
       <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
@@ -183,16 +220,20 @@ export default function CertificatesListPage() {
                       <Eye className="w-3.5 h-3.5 text-emerald-600" />
                       <span>Open Editor</span>
                     </Link>
-                    <a
-                      href={api.getCertificatePdfUrl(c.id)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1.5 py-2.5 px-4 min-h-[44px] bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold active:scale-95 transition"
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadPdf(c.id, c.certificate_number)}
+                      disabled={downloadingId === c.id}
+                      className="flex items-center justify-center gap-1.5 py-2.5 px-4 min-h-[44px] bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold active:scale-95 transition disabled:opacity-50"
                       title="Download PDF"
                     >
-                      <Download className="w-4 h-4" />
-                      <span>PDF</span>
-                    </a>
+                      {downloadingId === c.id ? (
+                        <RefreshCw className="w-4 h-4 animate-spin text-emerald-600" />
+                      ) : (
+                        <Download className="w-4 h-4 text-emerald-600" />
+                      )}
+                      <span>{downloadingId === c.id ? "Saving..." : "PDF"}</span>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -260,15 +301,19 @@ export default function CertificatesListPage() {
                           >
                             Editor
                           </Link>
-                          <a
-                            href={api.getCertificatePdfUrl(c.id)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-1 text-slate-600 hover:text-slate-900 rounded transition-colors"
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadPdf(c.id, c.certificate_number)}
+                            disabled={downloadingId === c.id}
+                            className="p-1 min-w-[28px] min-h-[28px] flex items-center justify-center text-slate-600 hover:text-slate-900 rounded transition-colors disabled:opacity-50"
                             title="Download PDF"
                           >
-                            <Download className="w-3.5 h-3.5" />
-                          </a>
+                            {downloadingId === c.id ? (
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin text-emerald-600" />
+                            ) : (
+                              <Download className="w-3.5 h-3.5" />
+                            )}
+                          </button>
                         </div>
                       </td>
                     </tr>

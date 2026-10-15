@@ -27,7 +27,7 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y pinch-zoom;
   overflow-x: hidden;
   min-height: 100dvh;
 }
@@ -94,15 +94,17 @@ body {
 /* Custom Industrial Engineering styling */
 .certificate-preview-box {
   width: 210mm;
+  max-width: 100%;
   min-height: 297mm;
   margin: 0 auto;
   background: #ffffff;
   color: #000000;
-  padding: 12mm;
+  padding: clamp(8mm, 3vw, 12mm);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #cbd5e1;
   font-family: "Helvetica Neue", Arial, sans-serif;
   box-sizing: border-box;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 @media print {

@@ -23,6 +23,7 @@ import {
   Wrench,
   Eye,
   Filter,
+  Loader2,
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import ConfirmModal from "@/components/ConfirmModal";
@@ -81,6 +82,21 @@ export default function ReclamationRecordsPage() {
 
   const isAdmin = currentUser?.role === "admin";
   const isAuthorized = currentUser && ["admin", "fab_shop", "viewer"].includes(currentUser.role);
+
+  const [downloadingCertId, setDownloadingCertId] = useState<number | null>(null);
+
+  const handleDownloadPdf = async (certId: number, certNumber: string = "CERTIFICATE") => {
+    setDownloadingCertId(certId);
+    try {
+      await api.downloadCertificatePdf(certId, certNumber);
+      showNotification("success", `Certificate ${certNumber} downloaded successfully`);
+    } catch (err: any) {
+      console.error("PDF download error:", err);
+      showNotification("error", "Failed to download PDF: " + (err.message || "Unknown error"));
+    } finally {
+      setDownloadingCertId(null);
+    }
+  };
 
   // Load user
   useEffect(() => {
@@ -527,15 +543,19 @@ export default function ReclamationRecordsPage() {
                           >
                             <span>Editor</span>
                           </Link>
-                          <a
-                            href={api.getCertificatePdfUrl(item.certificate_id)}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 rounded-xl transition active:scale-95"
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadPdf(item.certificate_id!, item.certificate_number || "CERTIFICATE")}
+                            disabled={downloadingCertId === item.certificate_id}
+                            className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 rounded-xl transition active:scale-95 disabled:opacity-50"
                             title="Download PDF"
                           >
-                            <Download className="w-4 h-4" />
-                          </a>
+                            {downloadingCertId === item.certificate_id ? (
+                              <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
+                            ) : (
+                              <Download className="w-4 h-4" />
+                            )}
+                          </button>
                         </>
                       )}
 
@@ -678,15 +698,19 @@ export default function ReclamationRecordsPage() {
                               >
                                 Editor
                               </Link>
-                              <a
-                                href={api.getCertificatePdfUrl(item.certificate_id)}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="p-1 text-slate-600 hover:text-slate-900 rounded transition-colors"
+                              <button
+                                type="button"
+                                onClick={() => handleDownloadPdf(item.certificate_id!, item.certificate_number || "CERTIFICATE")}
+                                disabled={downloadingCertId === item.certificate_id}
+                                className="p-1 text-slate-600 hover:text-slate-900 rounded transition-colors disabled:opacity-50"
                                 title="Download PDF certificate"
                               >
-                                <Download className="w-3.5 h-3.5" />
-                              </a>
+                                {downloadingCertId === item.certificate_id ? (
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-600" />
+                                ) : (
+                                  <Download className="w-3.5 h-3.5" />
+                                )}
+                              </button>
                             </>
                           )}
 
