@@ -82,7 +82,7 @@ export async function ensureAuthenticated(): Promise<string | null> {
   return autoLoginPromise;
 }
 
-async function request(endpoint: string, options: RequestInit = {}) {
+async function request(endpoint: string, options: RequestInit & { _retryCount?: number } = {}) {
   const isAuthEndpoint =
     endpoint.includes("/auth/login") ||
     endpoint.includes("/auth/register") ||
@@ -117,6 +117,14 @@ async function request(endpoint: string, options: RequestInit = {}) {
     );
   }
 
+  // Handle Render cold boot (HTTP 502 / 503 / 504 Gateway errors)
+  const retryCount = options._retryCount || 0;
+  if ((res.status === 502 || res.status === 503 || res.status === 504) && retryCount < 2) {
+    console.warn(`Server cold start detected (${res.status}). Retrying attempt ${retryCount + 1} in 4s...`);
+    await new Promise((r) => setTimeout(r, 4000));
+    return request(endpoint, { ...options, _retryCount: retryCount + 1 });
+  }
+
   // If 401 Unauthorized occurs on an authenticated route, attempt auto-refresh/relogin once
   if (res.status === 401 && typeof window !== "undefined" && !isAuthEndpoint) {
     console.warn("Received 401 for", endpoint, "– attempting re-authentication...");
@@ -135,6 +143,9 @@ async function request(endpoint: string, options: RequestInit = {}) {
   }
 
   if (!res.ok) {
+    if (res.status === 502 || res.status === 503 || res.status === 504) {
+      throw new Error("Backend server is currently starting up from sleep. Please wait 10 seconds and try again.");
+    }
     let errMsg = "An error occurred";
     try {
       const errData = await res.json();
