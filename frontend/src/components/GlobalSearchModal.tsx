@@ -261,7 +261,7 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
               <Search className="w-6 h-6 mx-auto mb-2 text-slate-300" />
               <p className="text-xs font-semibold text-slate-600">No matching records or commands found.</p>
               <p className="text-[11px] text-slate-400 mt-0.5">
-                Try searching by tracking ID (VR-XXXX), certificate number, or valve description.
+                Try searching by tracking ID (FAB-XXXX / VR-XXXX), certificate number, or valve description.
               </p>
             </div>
           )}

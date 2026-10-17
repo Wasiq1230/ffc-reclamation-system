@@ -44,7 +44,8 @@ class Settings(BaseSettings):
     PHOTOS_DIR: str = os.getenv("PHOTOS_DIR", str(BASE_DIR / "storage" / "photos"))
 
     # Business Logic Defaults
-    DEFAULT_VR_PREFIX: str = "VR"
+    DEFAULT_VR_PREFIX: str = "FAB"
+    DEFAULT_TRACKING_PREFIX: str = "FAB"
     DEFAULT_CERT_PREFIX: str = "CERT"
     FINANCIAL_TRACKING_ENABLED: bool = True
 

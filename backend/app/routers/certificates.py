@@ -608,7 +608,7 @@ async def scan_and_register_certificate(
         final_dept_id = dept.id if dept else 1
 
     # Atomic Sequence Generation for Job
-    tracking_id = generate_next_sequence_id(db, "VR")
+    tracking_id = generate_next_sequence_id(db, settings.DEFAULT_VR_PREFIX)
 
     new_job = ReclamationJob(
         tracking_id=tracking_id,

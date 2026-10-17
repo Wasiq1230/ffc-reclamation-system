@@ -189,7 +189,7 @@ def parse_certificate_text(text: str, db: Optional[Session] = None) -> Dict[str,
     tag_no = ""
     serial_no = ""
     tag_matches = re.findall(r"\b([A-Z]{2,4}\s*-\s*[0-9]{3,5}[A-Z]?)\b", normalized_text)
-    filtered_tags = [t for t in tag_matches if not t.startswith("OF-") and not t.startswith("QF-") and not t.startswith("ANNEX") and not t.startswith("VR-") and not t.startswith("REV-")]
+    filtered_tags = [t for t in tag_matches if not t.startswith("OF-") and not t.startswith("QF-") and not t.startswith("ANNEX") and not t.startswith("VR-") and not t.startswith("FAB-") and not t.startswith("REV-")]
 
     if filtered_tags:
         raw_tag = filtered_tags[0].strip()

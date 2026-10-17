@@ -7,7 +7,7 @@ class ReclamationJob(Base):
     __tablename__ = "reclamation_jobs"
 
     id = Column(Integer, primary_key=True, index=True)
-    tracking_id = Column(String(50), unique=True, index=True, nullable=False)  # e.g. "VR-2026-000001"
+    tracking_id = Column(String(50), unique=True, index=True, nullable=False)  # e.g. "FAB-2026-000001"
     
     # Registration & Receipt
     registration_date = Column(DateTime, default=datetime.utcnow, nullable=False)

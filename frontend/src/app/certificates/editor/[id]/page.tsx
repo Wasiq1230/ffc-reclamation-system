@@ -779,7 +779,7 @@ export default function CertificateEditorPage() {
 
               {/* BOTTOM FOOTER */}
               <div className="pt-2 border-t border-black text-[9px] text-slate-600 flex justify-between items-center">
-                <span>Cert No: {cert.certificate_number} | Rev: {cert.revision_number} | ID: {cert.identification_no} | Status: {cert.status}</span>
+                <span>Cert No: {cert.certificate_number} | Rev: {cert.revision_number} | Ident ID: {cert.identification_no} | Status: {cert.status}</span>
                 <span>FFC Fabrication Shop — Valve Reclamation System</span>
               </div>
             </div>

@@ -29,7 +29,7 @@ export default function SettingsPage() {
 
   // System settings state
   const [settings, setSettings] = useState<any>(null);
-  const [vrPrefix, setVrPrefix] = useState("VR");
+  const [vrPrefix, setVrPrefix] = useState("FAB");
   const [certPrefix, setCertPrefix] = useState("CERT");
   const [finEnabled, setFinEnabled] = useState(true);
   const [savingSystem, setSavingSystem] = useState(false);
@@ -77,7 +77,7 @@ export default function SettingsPage() {
 
         const data = await api.getSettings();
         setSettings(data);
-        setVrPrefix(data.default_vr_prefix || "VR");
+        setVrPrefix(data.default_vr_prefix || "FAB");
         setCertPrefix(data.default_cert_prefix || "CERT");
         setFinEnabled(data.financial_tracking_enabled ?? true);
       } catch (err) {

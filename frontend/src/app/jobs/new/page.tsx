@@ -314,7 +314,7 @@ export default function RegisterReclamationPage() {
     <div className="p-6 sm:p-8 max-w-5xl mx-auto space-y-6">
       <PageHeader
         title="Register Valve Reclamation"
-        description="Assign a permanent unique tracking ID (VR-YYYY-XXXXXX), origin, and operation scope."
+        description="Assign a permanent unique tracking ID (FAB-YYYY-XXXXXX), origin, and operation scope."
         actions={
           <div className="flex items-center gap-2">
             <Link
