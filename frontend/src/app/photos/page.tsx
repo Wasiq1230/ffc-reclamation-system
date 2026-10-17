@@ -385,7 +385,8 @@ export default function ValvePhotosGalleryPage() {
             <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search tracking, tag..."
+              autoComplete="off"
+              aria-label="Search tracking, tag"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="border border-slate-300 rounded pl-8 pr-3 py-1.5 w-full focus:outline-none focus:border-emerald-600 text-xs"
@@ -855,11 +856,6 @@ export default function ValvePhotosGalleryPage() {
               </label>
               <textarea
                 rows={2}
-                placeholder={
-                  uploadStage === "BEFORE"
-                    ? "e.g. Scored seat ring, gland packing worn, severe internal seat passing..."
-                    : "e.g. Stellited seat with Stellite #6, CNC machined, precision lapped..."
-                }
                 value={uploadWorkDone}
                 onChange={(e) => setUploadWorkDone(e.target.value)}
                 className="w-full rounded border border-slate-300 p-2 focus:border-emerald-600 focus:outline-none"
@@ -873,7 +869,7 @@ export default function ValvePhotosGalleryPage() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. Valve body seating area before machining"
+                autoComplete="off"
                 value={uploadCaption}
                 onChange={(e) => setUploadCaption(e.target.value)}
                 className="w-full rounded border border-slate-300 p-2 focus:border-emerald-600 focus:outline-none"

@@ -314,58 +314,18 @@ def generate_ffc_certificate_pdf(cert_data: dict, output_path: str = None) -> by
     # SECTION: WITNESS from Inspection Section
     # ----------------------------------------------------
     curr_y = exec_bottom
-    witness_height = 70
+    witness_height = 36
     witness_bottom = curr_y - witness_height
     
     c.setFont("Helvetica-Bold", 8.5)
     c.drawString(margin_x + 10, curr_y - 14, "WITNESS from Inspection Section:")
     
     c.setFont("Helvetica-Bold", 8)
-    c.drawString(margin_x + 15, curr_y - 30, "Comments:")
+    c.drawString(margin_x + 15, curr_y - 26, "Comments:")
     c.setFont("Helvetica", 8)
-    comments = str(cert_data.get("witness_comments", "") or "No leakage was observed during test.")
-    c.drawString(margin_x + 75, curr_y - 30, comments[:85])
-    
-    c.setFont("Helvetica-Bold", 8)
-    c.drawString(margin_x + 15, curr_y - 52, "Sign / Witness:")
-    c.setFont("Helvetica", 8)
-    sign_val = str(cert_data.get("witness_sign", "") or cert_data.get("approved_by_name", "") or "______________________")
-    c.drawString(margin_x + 95, curr_y - 52, sign_val)
-    
-    c.setFont("Helvetica-Bold", 8)
-    c.drawString(margin_x + 320, curr_y - 52, "Date:")
-    c.setFont("Helvetica", 8)
-    c.drawString(margin_x + 355, curr_y - 52, str(cert_data.get("certificate_date", "")))
-
-    # ----------------------------------------------------
-    # SECTION: SPECIAL NOTE (Optional Manual Text Entry)
-    # ----------------------------------------------------
-    special_note = str(cert_data.get("special_note", "") or "").strip()
-    if special_note:
-        c.setLineWidth(0.8)
-        c.line(margin_x, witness_bottom, margin_x + content_width, witness_bottom)
-        
-        c.setFont("Helvetica-Bold", 8.5)
-        c.drawString(margin_x + 10, witness_bottom - 14, "SPECIAL NOTE / INSTRUCTIONS:")
-        
-        text_obj = c.beginText(margin_x + 15, witness_bottom - 28)
-        text_obj.setFont("Helvetica", 8)
-        text_obj.setLeading(11)
-        
-        # Word wrap lines within margins preserving user line breaks
-        for paragraph in special_note.splitlines():
-            words = paragraph.split(" ")
-            line_buf = ""
-            for word in words:
-                test_line = (line_buf + " " + word).strip()
-                if c.stringWidth(test_line, "Helvetica", 8) <= (content_width - 30):
-                    line_buf = test_line
-                else:
-                    text_obj.textLine(line_buf)
-                    line_buf = word
-            if line_buf:
-                text_obj.textLine(line_buf)
-        c.drawText(text_obj)
+    comments = str(cert_data.get("witness_comments", "") or "")
+    if comments:
+        c.drawString(margin_x + 75, curr_y - 26, comments[:100])
     
     # Bottom metadata / Verification Bar
     c.setFont("Helvetica", 7)

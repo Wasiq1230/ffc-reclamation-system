@@ -134,8 +134,9 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Type a command, tracking ID (e.g. VR-2026), or certificate number..."
-            className="w-full text-sm bg-transparent border-0 focus:outline-none text-slate-900 placeholder:text-slate-400"
+            autoComplete="off"
+            aria-label="Type a command, tracking ID, or certificate number"
+            className="w-full text-sm bg-transparent border-0 focus:outline-none text-slate-900"
           />
           {query ? (
             <button

@@ -186,8 +186,9 @@ export default function MasterRegisterPage() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search tracking ID, notification no, tag no, description..."
-              className="w-full pl-10 pr-3 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 bg-slate-50 border border-slate-200 rounded-xl text-base sm:text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-emerald-600"
+              autoComplete="off"
+              aria-label="Search tracking ID, notification no, tag no, description"
+              className="w-full pl-10 pr-3 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 bg-slate-50 border border-slate-200 rounded-xl text-base sm:text-xs text-slate-900 focus:outline-none focus:border-emerald-600"
             />
           </div>
           <button

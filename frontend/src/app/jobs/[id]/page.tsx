@@ -1276,7 +1276,6 @@ export default function JobDetailPage() {
                   rows={2}
                   value={statusReason}
                   onChange={(e) => setStatusReason(e.target.value)}
-                  placeholder="e.g. Machining operations complete, moving to hydro testing"
                   className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -1360,7 +1359,7 @@ export default function JobDetailPage() {
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="e.g. Ultrasonic cleaning, NDT testing"
+                    autoComplete="off"
                     value={customWorkCategory}
                     onChange={(e) => setCustomWorkCategory(e.target.value)}
                     onKeyDown={(e) => {
@@ -1417,7 +1416,6 @@ export default function JobDetailPage() {
                   required
                   value={opDetails}
                   onChange={(e) => setOpDetails(e.target.value)}
-                  placeholder="e.g. Stellited body seat with Stellite #6 alloy, precision turned on lathe, lapped to mirror finish."
                   className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -1703,9 +1701,9 @@ export default function JobDetailPage() {
                 </label>
                 <input
                   type="text"
+                  autoComplete="off"
                   value={photoTitle}
                   onChange={(e) => setPhotoTitle(e.target.value)}
-                  placeholder="e.g. Body Cavity & Upstream Seat Ring"
                   className="w-full px-3 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -1722,11 +1720,6 @@ export default function JobDetailPage() {
                   required
                   value={photoWorkDesc}
                   onChange={(e) => setPhotoWorkDesc(e.target.value)}
-                  placeholder={
-                    photoStage === "BEFORE"
-                      ? "e.g. Dismantled valve body. Observed deep cavitation pitting on upstream seat ring."
-                      : "e.g. Stellited body seat using Stellite #6 alloy, precision turned on lathe, lapped to mirror finish."
-                  }
                   className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 leading-relaxed"
                 />
               </div>
@@ -1907,7 +1900,6 @@ export default function JobDetailPage() {
                   rows={2}
                   value={inspProblem}
                   onChange={(e) => setInspProblem(e.target.value)}
-                  placeholder="e.g. Severe internal seat passing during operation..."
                   className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -1920,7 +1912,6 @@ export default function JobDetailPage() {
                   rows={2}
                   value={inspDamage}
                   onChange={(e) => setInspDamage(e.target.value)}
-                  placeholder="e.g. Body seat scored, disc guide worn by 0.5mm, gland packing calcified..."
                   className="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -1949,9 +1940,9 @@ export default function JobDetailPage() {
                   </label>
                   <input
                     type="text"
+                    autoComplete="off"
                     value={inspScope}
                     onChange={(e) => setInspScope(e.target.value)}
-                    placeholder="e.g. Stelliting, machining, lapping..."
                     className="w-full px-3 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                   />
                 </div>

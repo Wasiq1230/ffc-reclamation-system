@@ -820,7 +820,7 @@ export default function CertificateScannerPage() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. 204918"
+                  autoComplete="off"
                   value={formData.notification_no}
                   onChange={(e) => setFormData({ ...formData, notification_no: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
@@ -833,7 +833,7 @@ export default function CertificateScannerPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. WO-204918"
+                  autoComplete="off"
                   value={formData.work_order_ref}
                   onChange={(e) => setFormData({ ...formData, work_order_ref: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
@@ -849,7 +849,7 @@ export default function CertificateScannerPage() {
               <input
                 type="text"
                 required
-                placeholder="e.g. 3 inch 1500# High Pressure Control Valve"
+                autoComplete="off"
                 value={formData.valve_description}
                 onChange={(e) => setFormData({ ...formData, valve_description: e.target.value })}
                 className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
@@ -863,7 +863,7 @@ export default function CertificateScannerPage() {
               </label>
               <input
                 type="text"
-                placeholder="e.g. Seat reclamation, Machining, Precision Lapping, Stelliting"
+                autoComplete="off"
                 value={formData.operation_categories}
                 onChange={(e) => setFormData({ ...formData, operation_categories: e.target.value })}
                 className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
@@ -879,7 +879,7 @@ export default function CertificateScannerPage() {
                 <label className="block text-slate-700 font-semibold mb-1">Tag No</label>
                 <input
                   type="text"
-                  placeholder="e.g. FV-1002"
+                  autoComplete="off"
                   value={formData.valve_tag_no}
                   onChange={(e) => setFormData({ ...formData, valve_tag_no: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
@@ -890,7 +890,7 @@ export default function CertificateScannerPage() {
                 <label className="block text-slate-700 font-semibold mb-1">Serial No</label>
                 <input
                   type="text"
-                  placeholder="e.g. V-9981"
+                  autoComplete="off"
                   value={formData.valve_serial_no}
                   onChange={(e) => setFormData({ ...formData, valve_serial_no: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
@@ -901,7 +901,7 @@ export default function CertificateScannerPage() {
                 <label className="block text-slate-700 font-semibold mb-1">Size</label>
                 <input
                   type="text"
-                  placeholder='e.g. 3"'
+                  autoComplete="off"
                   value={formData.size}
                   onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
@@ -912,7 +912,7 @@ export default function CertificateScannerPage() {
                 <label className="block text-slate-700 font-semibold mb-1">Rating</label>
                 <input
                   type="text"
-                  placeholder="e.g. 1500#"
+                  autoComplete="off"
                   value={formData.pressure_rating}
                   onChange={(e) => setFormData({ ...formData, pressure_rating: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
@@ -934,7 +934,7 @@ export default function CertificateScannerPage() {
                   <input
                     type="number"
                     step="any"
-                    placeholder="e.g. 450"
+                    autoComplete="off"
                     value={formData.seat_test_us_pressure}
                     onChange={(e) => setFormData({ ...formData, seat_test_us_pressure: e.target.value })}
                     className="w-full px-2 py-1.5 border border-slate-300 rounded bg-white focus:outline-none focus:border-emerald-600 font-mono"
@@ -945,7 +945,7 @@ export default function CertificateScannerPage() {
                   <input
                     type="number"
                     step="any"
-                    placeholder="e.g. 450"
+                    autoComplete="off"
                     value={formData.seat_test_ds_pressure}
                     onChange={(e) => setFormData({ ...formData, seat_test_ds_pressure: e.target.value })}
                     className="w-full px-2 py-1.5 border border-slate-300 rounded bg-white focus:outline-none focus:border-emerald-600 font-mono"
@@ -956,7 +956,7 @@ export default function CertificateScannerPage() {
                   <input
                     type="number"
                     step="any"
-                    placeholder="e.g. 1125"
+                    autoComplete="off"
                     value={formData.body_test_pressure}
                     onChange={(e) => setFormData({ ...formData, body_test_pressure: e.target.value })}
                     className="w-full px-2 py-1.5 border border-slate-300 rounded bg-white focus:outline-none focus:border-emerald-600 font-mono"
@@ -973,7 +973,7 @@ export default function CertificateScannerPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. M Akram (P-1042)"
+                  autoComplete="off"
                   value={formData.reclaimed_by_name}
                   onChange={(e) => setFormData({ ...formData, reclaimed_by_name: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
@@ -986,7 +986,7 @@ export default function CertificateScannerPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Tariq Mahmood (P-3088)"
+                  autoComplete="off"
                   value={formData.checked_by_name}
                   onChange={(e) => setFormData({ ...formData, checked_by_name: e.target.value })}
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"

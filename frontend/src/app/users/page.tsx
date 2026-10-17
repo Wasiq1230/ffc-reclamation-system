@@ -492,7 +492,7 @@ export default function UsersPage() {
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Muhammad Akram"
+                  autoComplete="name"
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -507,7 +507,7 @@ export default function UsersPage() {
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="e.g. makram"
+                    autoComplete="username"
                     className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
                   />
                 </div>
@@ -519,7 +519,7 @@ export default function UsersPage() {
                     type="text"
                     value={pNumber}
                     onChange={(e) => setPNumber(e.target.value)}
-                    placeholder="e.g. P-2055"
+                    autoComplete="off"
                     className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
                   />
                 </div>
@@ -534,7 +534,7 @@ export default function UsersPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. akram@ffc.com.pk"
+                  autoComplete="email"
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -547,7 +547,7 @@ export default function UsersPage() {
                   type="tel"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="+923001234567"
+                  autoComplete="tel"
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
                 />
               </div>
@@ -580,7 +580,7 @@ export default function UsersPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Strong initial password"
+                  autoComplete="new-password"
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>

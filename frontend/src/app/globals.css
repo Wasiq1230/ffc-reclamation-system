@@ -147,3 +147,33 @@ button[aria-label*="Next.js"] {
   width: 0 !important;
   height: 0 !important;
 }
+
+/* Ensure all inputs and textareas show NO ghost text/placeholder/hint when empty */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: transparent !important;
+  opacity: 0 !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Ensure real entered values display in normal crisp color */
+input,
+textarea,
+select {
+  color: #0f172a;
+}
+
+/* Ensure autofill doesn't introduce faded or ghost background/text in Android WebView */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0f172a !important;
+  transition: background-color 5000s ease-in-out 0s;
+}

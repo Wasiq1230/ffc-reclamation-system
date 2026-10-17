@@ -369,7 +369,7 @@ export default function SettingsPage() {
                     type="tel"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    placeholder="+923001234567"
+                    autoComplete="tel"
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-xs font-mono focus:outline-none focus:ring-1 focus:ring-slate-900"
                   />
                 </div>
@@ -413,7 +413,7 @@ export default function SettingsPage() {
                     required
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    placeholder="Enter current password"
+                    autoComplete="current-password"
                     className="w-full pr-10 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-slate-900"
                   />
                   <button
@@ -440,7 +440,7 @@ export default function SettingsPage() {
                     required
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="New complex password"
+                    autoComplete="new-password"
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-slate-900"
                   />
                 </div>
@@ -454,7 +454,7 @@ export default function SettingsPage() {
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Repeat new password"
+                    autoComplete="new-password"
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-slate-900"
                   />
                 </div>

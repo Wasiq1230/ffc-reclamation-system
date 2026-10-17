@@ -399,8 +399,9 @@ export default function ReclamationRecordsPage() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search tracking, tag, notification..."
-              className="w-full pl-9 pr-3 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 text-base sm:text-xs bg-white border border-slate-300 rounded-xl sm:rounded text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-600"
+              autoComplete="off"
+              aria-label="Search tracking, tag, notification"
+              className="w-full pl-9 pr-3 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 text-base sm:text-xs bg-white border border-slate-300 rounded-xl sm:rounded text-slate-800 focus:outline-none focus:border-emerald-600"
             />
             {search && (
               <button

@@ -174,7 +174,7 @@ export default function ForgotPasswordPage() {
                     required
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="you@example.com or +923001234567"
+                    autoComplete="off"
                     className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
                   />
                 </div>
@@ -219,7 +219,7 @@ export default function ForgotPasswordPage() {
                   required
                   value={tokenOrOtp}
                   onChange={(e) => setTokenOrOtp(e.target.value)}
-                  placeholder="Enter 6-digit code or token"
+                  autoComplete="off"
                   className="w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-xs text-slate-900 font-mono focus:outline-none focus:ring-1 focus:ring-slate-900"
                 />
               </div>
@@ -237,7 +237,7 @@ export default function ForgotPasswordPage() {
                     required
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="••••••••••••"
+                    autoComplete="new-password"
                     className="w-full pl-9 pr-10 py-2 bg-white border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
                   />
                   <button
@@ -267,7 +267,7 @@ export default function ForgotPasswordPage() {
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••••••"
+                    autoComplete="new-password"
                     className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
                   />
                 </div>

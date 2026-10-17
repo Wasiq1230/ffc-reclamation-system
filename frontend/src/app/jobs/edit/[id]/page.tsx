@@ -475,7 +475,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={notificationNo}
                 onChange={(e) => setNotificationNo(e.target.value)}
-                placeholder="e.g. 1048921"
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -486,7 +486,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={workOrderRef}
                 onChange={(e) => setWorkOrderRef(e.target.value)}
-                placeholder="e.g. WO-2026-442"
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -575,7 +575,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={valveTagNo}
                 onChange={(e) => setValveTagNo(e.target.value)}
-                placeholder="e.g. 10-XV-101"
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -586,7 +586,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={valveSerialNo}
                 onChange={(e) => setValveSerialNo(e.target.value)}
-                placeholder="e.g. SN-88912"
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -597,7 +597,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={size}
                 onChange={(e) => setSize(e.target.value)}
-                placeholder='e.g. 4", 6", 8"'
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -608,7 +608,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={pressureRating}
                 onChange={(e) => setPressureRating(e.target.value)}
-                placeholder="e.g. 150#, 300#, 600#"
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -632,7 +632,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={manufacturer}
                 onChange={(e) => setManufacturer(e.target.value)}
-                placeholder="e.g. Crane, Fisher, Velan"
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -643,7 +643,7 @@ export default function EditReclamationJobPage() {
                 type="text"
                 value={valveMaterial}
                 onChange={(e) => setValveMaterial(e.target.value)}
-                placeholder="e.g. WCB, SS316"
+                autoComplete="off"
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-emerald-600"
               />
             </div>
@@ -657,7 +657,6 @@ export default function EditReclamationJobPage() {
               rows={2}
               value={generalRemarks}
               onChange={(e) => setGeneralRemarks(e.target.value)}
-              placeholder="e.g. Check flange faces and seat ring weld overlay."
               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-emerald-600"
             />
           </div>
@@ -737,7 +736,6 @@ export default function EditReclamationJobPage() {
                       handleAddCustomOperation();
                     }
                   }}
-                  placeholder="Custom operation name..."
                   className="px-2 py-1 text-xs border-0 focus:outline-none text-slate-900"
                 />
                 <button

@@ -187,9 +187,9 @@ export default function ExternalCustomersPage() {
                 <input
                   type="text"
                   required
+                  autoComplete="off"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Fatima Fertilizer Sadiqabad"
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -198,9 +198,9 @@ export default function ExternalCustomersPage() {
                 <label className="block text-slate-700 font-semibold mb-1">Plant / Facility Name</label>
                 <input
                   type="text"
+                  autoComplete="off"
                   value={facility}
                   onChange={(e) => setFacility(e.target.value)}
-                  placeholder="e.g. Ammonia II Complex"
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -209,9 +209,9 @@ export default function ExternalCustomersPage() {
                 <label className="block text-slate-700 font-semibold mb-1">Operating Department / Area</label>
                 <input
                   type="text"
+                  autoComplete="off"
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
-                  placeholder="e.g. Synthesis Loop Section"
                   className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                 />
               </div>
@@ -221,9 +221,9 @@ export default function ExternalCustomersPage() {
                   <label className="block text-slate-700 font-semibold mb-1">Contact Person</label>
                   <input
                     type="text"
+                    autoComplete="off"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    placeholder="e.g. Engr. Asif"
                     className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600"
                   />
                 </div>
@@ -231,9 +231,9 @@ export default function ExternalCustomersPage() {
                   <label className="block text-slate-700 font-semibold mb-1">Phone</label>
                   <input
                     type="text"
+                    autoComplete="off"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+92 300 0000000"
                     className="w-full px-2.5 py-1.5 border border-slate-300 rounded focus:outline-none focus:border-emerald-600 font-mono"
                   />
                 </div>

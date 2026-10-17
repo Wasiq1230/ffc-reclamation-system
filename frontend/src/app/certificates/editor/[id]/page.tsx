@@ -458,7 +458,6 @@ export default function CertificateEditorPage() {
                           value={formData.gland_packing_warehouse_code || ""}
                           onChange={(e) => handleFieldChange("gland_packing_warehouse_code", e.target.value)}
                           disabled={isIssued}
-                          placeholder="e.g. GP-881"
                           className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] font-mono w-24"
                         />
                       </div>
@@ -469,7 +468,6 @@ export default function CertificateEditorPage() {
                           value={formData.gland_packing_specification || ""}
                           onChange={(e) => handleFieldChange("gland_packing_specification", e.target.value)}
                           disabled={isIssued}
-                          placeholder="Manual entry: spec or description"
                           className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] w-52"
                         />
                       </div>
@@ -495,7 +493,6 @@ export default function CertificateEditorPage() {
                           value={formData.bonnet_gasket_warehouse_code || ""}
                           onChange={(e) => handleFieldChange("bonnet_gasket_warehouse_code", e.target.value)}
                           disabled={isIssued}
-                          placeholder="e.g. BG-201"
                           className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] font-mono w-24"
                         />
                       </div>
@@ -506,7 +503,6 @@ export default function CertificateEditorPage() {
                           value={formData.bonnet_gasket_specification || ""}
                           onChange={(e) => handleFieldChange("bonnet_gasket_specification", e.target.value)}
                           disabled={isIssued}
-                          placeholder="Manual entry: gasket type or spec"
                           className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] w-52"
                         />
                       </div>
@@ -552,7 +548,6 @@ export default function CertificateEditorPage() {
                           value={formData.seat_test_us_pressure || ""}
                           onChange={(e) => handleFieldChange("seat_test_us_pressure", e.target.value)}
                           disabled={isIssued}
-                          placeholder="e.g. 450 PSI"
                           className="px-1 py-0.5 border border-black/60 rounded text-[11px] font-mono w-24"
                         />
                       </div>
@@ -563,7 +558,6 @@ export default function CertificateEditorPage() {
                           value={formData.seat_test_us_result || ""}
                           onChange={(e) => handleFieldChange("seat_test_us_result", e.target.value)}
                           disabled={isIssued}
-                          placeholder="Pass"
                           className="px-1 py-0.5 border border-black/60 rounded text-[11px] font-bold w-20 text-center"
                         />
                       </div>
@@ -589,7 +583,6 @@ export default function CertificateEditorPage() {
                           value={formData.seat_test_ds_pressure || ""}
                           onChange={(e) => handleFieldChange("seat_test_ds_pressure", e.target.value)}
                           disabled={isIssued}
-                          placeholder="e.g. 450 PSI"
                           className="px-1 py-0.5 border border-black/60 rounded text-[11px] font-mono w-24"
                         />
                       </div>
@@ -600,7 +593,6 @@ export default function CertificateEditorPage() {
                           value={formData.seat_test_ds_result || ""}
                           onChange={(e) => handleFieldChange("seat_test_ds_result", e.target.value)}
                           disabled={isIssued}
-                          placeholder="Pass"
                           className="px-1 py-0.5 border border-black/60 rounded text-[11px] font-bold w-20 text-center"
                         />
                       </div>
@@ -626,7 +618,6 @@ export default function CertificateEditorPage() {
                           value={formData.body_test_pressure || ""}
                           onChange={(e) => handleFieldChange("body_test_pressure", e.target.value)}
                           disabled={isIssued}
-                          placeholder="e.g. 675 PSI"
                           className="px-1 py-0.5 border border-black/60 rounded text-[11px] font-mono w-24"
                         />
                       </div>
@@ -637,7 +628,6 @@ export default function CertificateEditorPage() {
                           value={formData.body_test_result || ""}
                           onChange={(e) => handleFieldChange("body_test_result", e.target.value)}
                           disabled={isIssued}
-                          placeholder="Pass"
                           className="px-1 py-0.5 border border-black/60 rounded text-[11px] font-bold w-20 text-center"
                         />
                       </div>
@@ -674,7 +664,6 @@ export default function CertificateEditorPage() {
                         value={formData.reclaimed_by_name || ""}
                         onChange={(e) => handleFieldChange("reclaimed_by_name", e.target.value)}
                         disabled={isIssued}
-                        placeholder="Machinist / Technician"
                         className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] flex-1"
                       />
                     </div>
@@ -685,7 +674,6 @@ export default function CertificateEditorPage() {
                         value={formData.reclaimed_by_pno || ""}
                         onChange={(e) => handleFieldChange("reclaimed_by_pno", e.target.value)}
                         disabled={isIssued}
-                        placeholder="P-XXXX"
                         className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] w-28 font-mono"
                       />
                     </div>
@@ -702,7 +690,6 @@ export default function CertificateEditorPage() {
                         value={formData.checked_by_name || ""}
                         onChange={(e) => handleFieldChange("checked_by_name", e.target.value)}
                         disabled={isIssued}
-                        placeholder="Section Incharge / Lead"
                         className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] flex-1"
                       />
                     </div>
@@ -713,7 +700,6 @@ export default function CertificateEditorPage() {
                         value={formData.checked_by_pno || ""}
                         onChange={(e) => handleFieldChange("checked_by_pno", e.target.value)}
                         disabled={isIssued}
-                        placeholder="P-XXXX"
                         className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] w-28 font-mono"
                       />
                     </div>
@@ -785,62 +771,10 @@ export default function CertificateEditorPage() {
                       value={formData.witness_comments || ""}
                       onChange={(e) => handleFieldChange("witness_comments", e.target.value)}
                       disabled={isIssued}
-                      placeholder="e.g. No leakage was observed during hydro testing. Dimensions and seat finish meet reclamation standard."
                       className="px-2 py-1 border border-black/60 rounded text-[11px] flex-1"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4 pt-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-semibold">Sign / Inspector:</span>
-                      <input
-                        type="text"
-                        value={formData.witness_sign || ""}
-                        onChange={(e) => handleFieldChange("witness_sign", e.target.value)}
-                        disabled={isIssued}
-                        placeholder="Tariq Mahmood (QA)"
-                        className="px-1.5 py-0.5 border border-black/60 rounded text-[11px] flex-1 font-semibold"
-                      />
-                    </div>
-                    <div className="flex items-center gap-2 justify-end">
-                      <span className="text-[11px]">Date:</span>
-                      <span className="font-mono underline underline-offset-2">{formData.certificate_date}</span>
-                    </div>
-                  </div>
                 </div>
-
-                {/* SPECIAL NOTE / INSTRUCTIONS (Optional Manual Text Entry) */}
-                {(!isIssued || (formData.special_note && formData.special_note.trim())) && (
-                  <div className="p-3 border-t border-black text-xs space-y-1.5 bg-amber-50/20">
-                    <div className="flex items-center justify-between">
-                      <p className="font-bold text-[11px] uppercase tracking-wide">SPECIAL NOTE / INSTRUCTIONS:</p>
-                      {!isIssued && (
-                        <span className="no-print text-[10px] text-slate-400 font-normal italic">
-                          (Optional — omitted from certificate if blank)
-                        </span>
-                      )}
-                    </div>
-                    {!isIssued ? (
-                      <>
-                        <textarea
-                          rows={3}
-                          value={formData.special_note || ""}
-                          onChange={(e) => handleFieldChange("special_note", e.target.value)}
-                          placeholder="Enter any additional details, special instructions, warranty remarks, or post-reclamation observations..."
-                          className="print:hidden w-full px-2 py-1.5 border border-black/60 rounded text-[11px] leading-relaxed resize-y focus:outline-none focus:border-black font-sans bg-white"
-                        />
-                        {formData.special_note && formData.special_note.trim() && (
-                          <div className="hidden print:block text-[11px] leading-relaxed whitespace-pre-wrap font-sans text-slate-900">
-                            {formData.special_note}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="text-[11px] leading-relaxed whitespace-pre-wrap font-sans text-slate-800 p-0.5">
-                        {formData.special_note}
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
 
               {/* BOTTOM FOOTER */}
@@ -883,7 +817,6 @@ export default function CertificateEditorPage() {
                   required
                   value={revisionReason}
                   onChange={(e) => setRevisionReason(e.target.value)}
-                  placeholder="e.g. Corrected stem bushing lapping checkbox based on final QA witness inspection."
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-500"
                 />
               </div>
