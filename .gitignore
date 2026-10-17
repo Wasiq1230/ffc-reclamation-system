@@ -67,6 +67,7 @@ find_grid.py
 # Android & Binaries
 *.apk
 *.aab
+*.mp4
 frontend/android/.gradle/
 frontend/android/build/
 frontend/android/app/build/

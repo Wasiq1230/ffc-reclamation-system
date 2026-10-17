@@ -119,8 +119,8 @@ async function request(endpoint: string, options: RequestInit & { _retryCount?: 
 
   // Handle Render cold boot (HTTP 502 / 503 / 504 Gateway errors)
   const retryCount = options._retryCount || 0;
-  if ((res.status === 502 || res.status === 503 || res.status === 504) && retryCount < 2) {
-    console.warn(`Server cold start detected (${res.status}). Retrying attempt ${retryCount + 1} in 4s...`);
+  if ((res.status === 502 || res.status === 503 || res.status === 504) && retryCount < 8) {
+    console.warn(`Server cold start detected (${res.status}). Retrying attempt ${retryCount + 1} of 8 in 4s...`);
     await new Promise((r) => setTimeout(r, 4000));
     return request(endpoint, { ...options, _retryCount: retryCount + 1 });
   }

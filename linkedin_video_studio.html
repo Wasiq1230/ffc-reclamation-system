@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FFC Valve Reclamation System - LinkedIn Video Studio | Muhammad Wasiq Hussain</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #060d1a; color: #f8fafc; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    
+    header { text-align: center; margin-bottom: 16px; }
+    h1 { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .badge { background: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 600; }
+    p.sub { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+    
+    .studio-container { position: relative; width: 100%; max-width: 1100px; background: #0b1528; border: 1px solid #1e293b; border-radius: 16px; padding: 14px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6); }
+    
+    .canvas-wrapper { position: relative; width: 100%; padding-top: 56.25%; /* 16:9 */ background: #030712; border-radius: 12px; overflow: hidden; border: 1px solid #1f2937; }
+    .canvas-wrapper.vertical { padding-top: 177.77%; /* 9:16 */ max-width: 440px; margin: 0 auto; }
+    
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    
+    .controls { display: flex; flex-wrap: wrap; items-center; justify-content: space-between; gap: 12px; margin-top: 14px; padding: 8px 4px; }
+    .btn-group { display: flex; align-items: center; gap: 8px; }
+    
+    button { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; padding: 9px 15px; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    button:hover { background: #334155; color: #fff; }
+    button.primary { background: #059669; border-color: #10b981; color: #fff; }
+    button.primary:hover { background: #10b981; }
+    button.danger { background: #e11d48; border-color: #f43f5e; color: #fff; }
+    button.active { background: #0284c7; border-color: #38bdf8; color: #fff; }
+    
+    .timeline { width: 100%; display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+    .timeline input[type="range"] { flex: 1; accent-color: #10b981; height: 6px; border-radius: 3px; cursor: pointer; }
+    .time-display { font-family: monospace; font-size: 12px; color: #94a3b8; min-width: 80px; text-align: right; }
+    
+    .scenes-nav { display: flex; gap: 6px; overflow-x: auto; padding: 8px 0; margin-top: 8px; border-top: 1px solid #1e293b; }
+    .scene-pill { font-size: 11px; padding: 4px 10px; border-radius: 6px; background: #0f172a; border: 1px solid #1e293b; color: #94a3b8; cursor: pointer; white-space: nowrap; }
+    .scene-pill.active { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399; font-weight: 600; }
+    
+    .author-bar { margin-top: 14px; text-align: center; font-size: 12px; color: #64748b; }
+    .author-bar strong { color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>
+      <span>FFC Valve Reclamation App</span>
+      <span class="badge">LinkedIn 60 FPS Showcase</span>
+    </h1>
+    <p class="sub">Dynamic 3D Zoom & Pan Animation Studio · Fauji Fertilizer Company Ltd. · Goth Machhi</p>
+  </header>
+
+  <div class="studio-container">
+    <div id="canvasWrapper" class="canvas-wrapper">
+      <canvas id="stage" width="1920" height="1080"></canvas>
+    </div>
+
+    <!-- Timeline Slider -->
+    <div class="timeline">
+      <button id="playBtn" class="primary" style="padding: 6px 12px;">▶ Play</button>
+      <input type="range" id="seekSlider" min="0" max="1000" value="0">
+      <span id="timeDisplay" class="time-display">00:00 / 00:34</span>
+    </div>
+
+    <!-- Scene Selector Tabs -->
+    <div class="scenes-nav">
+      <span class="scene-pill active" onclick="seekToSec(0)">01. Mobile Login & Corner Copyright</span>
+      <span class="scene-pill" onclick="seekToSec(6)">02. Executive Dashboard (KPIs)</span>
+      <span class="scene-pill" onclick="seekToSec(12)">03. AI OCR Viewfinder & Scan</span>
+      <span class="scene-pill" onclick="seekToSec(18)">04. QF-003-05-307 Certificate</span>
+      <span class="scene-pill" onclick="seekToSec(24)">05. Scoped Storage Exports</span>
+      <span class="scene-pill" onclick="seekToSec(29)">06. Hero Outro & Developer Credits</span>
+    </div>
+
+    <!-- Bottom Controls & Export -->
+    <div class="controls">
+      <div class="btn-group">
+        <button id="aspect169Btn" class="active" onclick="setAspect('16:9')">📐 16:9 Landscape (Feed)</button>
+        <button id="aspect916Btn" onclick="setAspect('9:16')">📱 9:16 Portrait (Mobile)</button>
+      </div>
+
+      <div class="btn-group">
+        <button id="recordBtn" class="danger">🔴 Record & Download Video (WebM / MP4)</button>
+        <button onclick="downloadScreenshot()">📸 Snap High-Res Frame</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="author-bar">
+    Engineered by <strong>Muhammad Wasiq Hussain</strong> · Software Engineer · FFC Fabrication Shop Goth Machhi
+  </div>
+
+  <script>
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d');
+    const seekSlider = document.getElementById('seekSlider');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const playBtn = document.getElementById('playBtn');
+    const recordBtn = document.getElementById('recordBtn');
+    const canvasWrapper = document.getElementById('canvasWrapper');
+
+    const DURATION = 34; // 34 seconds
+    let currentTime = 0;
+    let isPlaying = true;
+    let lastTimestamp = performance.now();
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    function setAspect(ratio) {
+      if (ratio === '9:16') {
+        canvas.width = 1080;
+        canvas.height = 1920;
+        canvasWrapper.className = 'canvas-wrapper vertical';
+        document.getElementById('aspect916Btn').className = 'active';
+        document.getElementById('aspect169Btn').className = '';
+      } else {
+        canvas.width = 1920;
+        canvas.height = 1080;
+        canvasWrapper.className = 'canvas-wrapper';
+        document.getElementById('aspect169Btn').className = 'active';
+        document.getElementById('aspect916Btn').className = '';
+      }
+    }
+
+    function seekToSec(sec) {
+      currentTime = sec;
+      seekSlider.value = (currentTime / DURATION) * 1000;
+    }
+
+    seekSlider.addEventListener('input', (e) => {
+      currentTime = (e.target.value / 1000) * DURATION;
+    });
+
+    playBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      playBtn.textContent = isPlaying ? "⏸ Pause" : "▶ Play";
+    });
+
+    function easeInOutCubic(x) {
+      return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function drawScreen(t) {
+      const W = canvas.width;
+      const H = canvas.height;
+      const isVertical = H > W;
+
+      // 1. Background Gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+      bgGrad.addColorStop(0, '#060d1a');
+      bgGrad.addColorStop(0.5, '#0b172a');
+      bgGrad.addColorStop(1, '#050a14');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Studio Glows
+      ctx.save();
+      const glowGrad1 = ctx.createRadialGradient(W*0.2, H*0.2, 50, W*0.2, H*0.2, 600);
+      glowGrad1.addColorStop(0, 'rgba(16, 185, 129, 0.12)');
+      glowGrad1.addColorStop(1, 'rgba(16, 185, 129, 0)');
+      ctx.fillStyle = glowGrad1;
+      ctx.fillRect(0, 0, W, H);
+
+      const glowGrad2 = ctx.createRadialGradient(W*0.8, H*0.8, 50, W*0.8, H*0.8, 700);
+      glowGrad2.addColorStop(0, 'rgba(14, 165, 233, 0.10)');
+      glowGrad2.addColorStop(1, 'rgba(14, 165, 233, 0)');
+      ctx.fillStyle = glowGrad2;
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+
+      // Subtle Grid Lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+      // Timeline Scene Parameters
+      let sceneIndex = 0;
+      let titleBadge = "01 / ENTERPRISE AUTHENTICATION";
+      let titleMain = "FFC Valve Reclamation App";
+      let titleSub = "Universal multi-auth with persistent scoped session";
+      let bullet1 = "✓ Biometric & Active Directory Login";
+      let bullet2 = "✓ Quality Standard QF-003-05-307 Compliant";
+      let bullet3 = "✓ Designed & Built by Muhammad Wasiq Hussain";
+
+      let camScale = 1.0;
+      let camTx = isVertical ? W * 0.5 : W * 0.65;
+      let camTy = isVertical ? H * 0.6 : H * 0.52;
+
+      if (t < 6.0) {
+        sceneIndex = 0;
+        const p = t / 6.0;
+        const e = easeInOutCubic(Math.min(1.0, p * 1.3));
+        camScale = lerp(0.95, 1.45, e);
+        camTy = lerp(isVertical ? H*0.62 : H*0.50, isVertical ? H*0.68 : H*0.62, e);
+      } else if (t < 12.0) {
+        sceneIndex = 1;
+        const p = (t - 6.0) / 6.0;
+        const e = easeInOutCubic(p);
+        titleBadge = "02 / SHOP FLOOR TELEMETRY";
+        titleMain = "Real-Time Executive Dashboard";
+        titleSub = "Live visibility across Ammonia, Urea, and Utilities Plants";
+        bullet1 = "✓ 1,280+ Valves Reclaimed & Tested";
+        bullet2 = "✓ 99.4% Hydraulic Pressure Pass Rate";
+        bullet3 = "✓ Automated Tracking Sequence (FAB-2026)";
+        camScale = lerp(1.2, 1.62, e);
+        camTy = lerp(isVertical ? H*0.65 : H*0.55, isVertical ? H*0.48 : H*0.38, e);
+      } else if (t < 18.0) {
+        sceneIndex = 2;
+        const p = (t - 12.0) / 6.0;
+        const e = easeInOutCubic(p);
+        titleBadge = "03 / COMPUTER VISION & OCR";
+        titleMain = "1-Click AI Certificate Scanner";
+        titleSub = "On-device camera viewfinder with instant tag extraction";
+        bullet1 = "✓ Live Environment Camera Stream";
+        bullet2 = "✓ Laser Sweep & Real-Time Bounding Box";
+        bullet3 = "✓ Instant Auto-Fill for Valve Specs & Testing";
+        camScale = lerp(1.35, 1.75, e);
+        camTy = isVertical ? H * 0.55 : H * 0.48;
+      } else if (t < 24.0) {
+        sceneIndex = 3;
+        const p = (t - 18.0) / 6.0;
+        const e = easeInOutCubic(p);
+        titleBadge = "04 / QUALITY CERTIFICATION";
+        titleMain = "QF-003-05-307 Digital Certificate";
+        titleSub = "Hydro Shell & Seat pressure testing with tamper-proof QR";
+        bullet1 = "✓ Hydraulic Shell Test: 1125 PSI (Passed)";
+        bullet2 = "✓ Dual Digital Inspection Signatures";
+        bullet3 = "✓ Sequence Continuing Seamlessly (FAB)";
+        camScale = lerp(1.4, 1.65, e);
+        camTy = isVertical ? H * 0.62 : H * 0.58;
+      } else if (t < 29.0) {
+        sceneIndex = 4;
+        const p = (t - 24.0) / 5.0;
+        const e = easeInOutCubic(p);
+        titleBadge = "05 / IN-APP DOWNLOADS & OTA UPDATES";
+        titleMain = "Native Scoped Storage & Auto-Sync";
+        titleSub = "Direct CSV, Excel & PDF exports with zero APK re-installs";
+        bullet1 = "✓ Android Scoped Storage (MediaStore.Downloads)";
+        bullet2 = "✓ Native FileProvider & Direct Sheet Share";
+        bullet3 = "✓ Dynamic LOAD_NO_CACHE: Updates Live from Server";
+        camScale = lerp(1.65, 1.48, e);
+        camTy = isVertical ? H * 0.70 : H * 0.68;
+      } else {
+        sceneIndex = 5;
+        const p = (t - 29.0) / 5.0;
+        const e = easeInOutCubic(p);
+        titleBadge = "06 / ARCHITECTURE & CREDITS";
+        titleMain = "Engineered for FFC Shop Floor";
+        titleSub = "Production Android Solution for Fauji Fertilizer Company Ltd.";
+        bullet1 = "★ Lead Architect: Muhammad Wasiq Hussain";
+        bullet2 = "★ Tech: Capacitor Android · FastAPI · Next.js · SQLite";
+        bullet3 = "★ Location: FFC Goth Machhi, Sadiqabad";
+        camScale = lerp(1.3, 0.95, e);
+        camTx = isVertical ? W * 0.5 : W * 0.68;
+        camTy = isVertical ? H * 0.62 : H * 0.50;
+      }
+
+      // 2. Draw Android Phone Device Mockup
+      const phoneW = 460 * camScale;
+      const phoneH = 960 * camScale;
+      const px = camTx - phoneW / 2;
+      const py = camTy - phoneH / 2;
+
+      ctx.save();
+      // Drop Shadow
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.65)';
+      ctx.shadowBlur = 40 * camScale;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 20 * camScale;
+
+      // Phone Titanium Chassis
+      ctx.fillStyle = '#1e293b';
+      roundRect(ctx, px, py, phoneW, phoneH, 48 * camScale);
+      ctx.fill();
+      ctx.restore();
+
+      // Chassis Border Highlight
+      ctx.save();
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 3 * camScale;
+      roundRect(ctx, px, py, phoneW, phoneH, 48 * camScale);
+      ctx.stroke();
+
+      // Phone Inner Screen Container
+      const pad = 14 * camScale;
+      const scW = phoneW - pad * 2;
+      const scH = phoneH - pad * 2;
+      const scX = px + pad;
+      const scY = py + pad;
+
+      ctx.save();
+      roundRect(ctx, scX, scY, scW, scH, 38 * camScale);
+      ctx.clip();
+
+      // Render Active App Screen inside Phone
+      drawPhoneScreenContent(scX, scY, scW, scH, sceneIndex, t, camScale);
+
+      ctx.restore();
+
+      // Punch-hole Camera
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(px + phoneW / 2, scY + 15 * camScale, 7 * camScale, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#334155';
+      ctx.beginPath();
+      ctx.arc(px + phoneW / 2, scY + 15 * camScale, 3 * camScale, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Speaker Grill
+      ctx.fillStyle = '#475569';
+      roundRect(ctx, px + phoneW / 2 - 25 * camScale, scY - 5 * camScale, 50 * camScale, 3 * camScale, 1.5 * camScale);
+      ctx.fill();
+      ctx.restore();
+
+      // 3. Motion-Graphics Typography Panel (Left on Desktop, Top on Vertical)
+      if (!isVertical) {
+        const lx = 90;
+        const ly = 160;
+
+        // Badge Pill
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+        roundRect(ctx, lx, ly, 320, 36, 8);
+        ctx.fill();
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 1;
+        roundRect(ctx, lx, ly, 320, 36, 8);
+        ctx.stroke();
+
+        ctx.fillStyle = '#34d399';
+        ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText(titleBadge, lx + 16, ly + 23);
+
+        // Title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText(titleMain, lx, ly + 78);
+
+        // Subtitle
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText(titleSub, lx, ly + 112);
+
+        // Feature Bullets
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.fillRect(lx, ly + 140, 520, 1);
+
+        ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillText(bullet1, lx, ly + 175);
+        ctx.fillText(bullet2, lx, ly + 215);
+
+        ctx.fillStyle = bullet3.includes("Wasiq") ? '#34d399' : '#f1f5f9';
+        ctx.fillText(bullet3, lx, ly + 255);
+
+        // Author Credit Box (Bottom Left)
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        roundRect(ctx, lx, H - 180, 540, 95, 16);
+        ctx.fill();
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1;
+        roundRect(ctx, lx, H - 180, 540, 95, 16);
+        ctx.stroke();
+
+        // Avatar
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(lx + 45, H - 132, 24, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText("W", lx + 36, H - 125);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText("Muhammad Wasiq Hussain", lx + 85, H - 142);
+
+        ctx.fillStyle = '#34d399';
+        ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText("Software Engineer · Full-Stack & Android Systems", lx + 85, H - 122);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText("Fauji Fertilizer Company Ltd. | Goth Machhi", lx + 85, H - 105);
+
+        // Top Brand Title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText("FAUJI FERTILIZER COMPANY LTD.", lx, 75);
+        ctx.fillStyle = '#059669';
+        ctx.font = 'bold 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto';
+        ctx.fillText("FABRICATION SHOP · GOTH MACHHI · QF-003-05-307", lx, 95);
+      }
+
+      // Bottom Video Progress Bar
+      const pbW = (t / DURATION) * W;
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, H - 6, W, 6);
+      ctx.fillStyle = '#10b981';
+      ctx.fillRect(0, H - 6, pbW, 6);
+    }
+
+    function drawPhoneScreenContent(x, y, w, h, sceneIndex, t, scale) {
+      // White Screen Canvas Base
+      ctx.fillStyle = sceneIndex === 2 ? '#0f172a' : '#f8fafc';
+      ctx.fillRect(x, y, w, h);
+
+      // Status Bar
+      ctx.fillStyle = sceneIndex === 2 ? '#ffffff' : '#0f172a';
+      ctx.font = `bold ${13 * scale}px sans-serif`;
+      ctx.fillText("09:41", x + 25 * scale, y + 20 * scale);
+      ctx.font = `${11 * scale}px sans-serif`;
+      ctx.fillText("5G ● 100%", x + w - 75 * scale, y + 20 * scale);
+
+      if (sceneIndex === 0) {
+        // SCREEN 1: LOGIN
+        ctx.fillStyle = '#0f172a';
+        ctx.font = `bold ${16 * scale}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText("FAUJI FERTILIZER COMPANY", x + w/2, y + 120 * scale);
+        ctx.fillStyle = '#047857';
+        ctx.font = `bold ${11 * scale}px sans-serif`;
+        ctx.fillText("FABRICATION SHOP · GOTH MACHHI", x + w/2, y + 142 * scale);
+        ctx.fillStyle = '#64748b';
+        ctx.font = `${12 * scale}px sans-serif`;
+        ctx.fillText("Reclamation Management System", x + w/2, y + 162 * scale);
+        ctx.textAlign = 'left';
+
+        // Card
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1;
+        roundRect(ctx, x + 20 * scale, y + 200 * scale, w - 40 * scale, 380 * scale, 14 * scale);
+        ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#1e293b';
+        ctx.font = `bold ${12 * scale}px sans-serif`;
+        ctx.fillText("SIGN IN TO WORKSTATION", x + 35 * scale, y + 230 * scale);
+
+        // Input 1
+        ctx.fillStyle = '#f8fafc'; ctx.strokeStyle = '#cbd5e1';
+        roundRect(ctx, x + 35 * scale, y + 260 * scale, w - 70 * scale, 42 * scale, 8 * scale);
+        ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#0f172a';
+        ctx.font = `${13 * scale}px sans-serif`;
+        ctx.fillText("mwasiq@ffc.com.pk", x + 48 * scale, y + 286 * scale);
+
+        // Input 2
+        ctx.fillStyle = '#f8fafc';
+        roundRect(ctx, x + 35 * scale, y + 320 * scale, w - 70 * scale, 42 * scale, 8 * scale);
+        ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#64748b';
+        ctx.fillText("● ● ● ● ● ● ● ● ● ● ● ●", x + 48 * scale, y + 346 * scale);
+
+        // Buttons
+        ctx.fillStyle = '#0f172a';
+        roundRect(ctx, x + 35 * scale, y + 380 * scale, w - 70 * scale, 45 * scale, 10 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${13 * scale}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText("Sign In →", x + w/2, y + 408 * scale);
+
+        ctx.fillStyle = '#ecfdf5'; ctx.strokeStyle = '#6ee7b7';
+        roundRect(ctx, x + 35 * scale, y + 438 * scale, w - 70 * scale, 40 * scale, 10 * scale);
+        ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#065f46';
+        ctx.font = `bold ${12 * scale}px sans-serif`;
+        ctx.fillText("Quick Sign In (Shop Floor)", x + w/2, y + 463 * scale);
+        ctx.textAlign = 'left';
+
+        // Footnote
+        ctx.fillStyle = '#64748b';
+        ctx.font = `bold ${11 * scale}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText("© Muhammad Wasiq Hussain", x + w/2, y + 680 * scale);
+        ctx.textAlign = 'left';
+
+      } else if (sceneIndex === 1) {
+        // SCREEN 2: DASHBOARD
+        ctx.fillStyle = '#0f172a';
+        ctx.font = `bold ${14 * scale}px sans-serif`;
+        ctx.fillText("FFC RECLAMATION SHOP", x + 25 * scale, y + 65 * scale);
+
+        // Sync Pill
+        ctx.fillStyle = '#e2e8f0';
+        roundRect(ctx, x + w - 85 * scale, y + 50 * scale, 65 * scale, 26 * scale, 6 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#0f172a';
+        ctx.font = `bold ${11 * scale}px sans-serif`;
+        ctx.fillText("Sync", x + w - 65 * scale, y + 68 * scale);
+
+        // Hero Card
+        ctx.fillStyle = '#061020';
+        roundRect(ctx, x + 20 * scale, y + 95 * scale, w - 40 * scale, 110 * scale, 14 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = `bold ${10 * scale}px sans-serif`;
+        ctx.fillText("TOTAL VALVES RECLAIMED", x + 35 * scale, y + 120 * scale);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${32 * scale}px sans-serif`;
+        ctx.fillText("1,284", x + 35 * scale, y + 160 * scale);
+
+        // 4 KPI Cards
+        const kpis = [
+          ["Hydro Pass", "99.4%", "#059669", "#ecfdf5"],
+          ["Active Jobs", "48", "#2563eb", "#eff6ff"],
+          ["Ready Valves", "132", "#d97706", "#fef3c7"],
+          ["Savings", "Rs 84.5M", "#7c3aed", "#f5f3ff"],
+        ];
+        kpis.forEach((kp, idx) => {
+          const col = idx % 2;
+          const row = Math.floor(idx / 2);
+          const cx = x + 20 * scale + col * (w/2 - 15 * scale);
+          const cy = y + 220 * scale + row * 90 * scale;
+          ctx.fillStyle = kp[3]; ctx.strokeStyle = '#e2e8f0';
+          roundRect(ctx, cx, cy, w/2 - 25 * scale, 80 * scale, 12 * scale);
+          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#64748b';
+          ctx.font = `bold ${11 * scale}px sans-serif`;
+          ctx.fillText(kp[0], cx + 12 * scale, cy + 24 * scale);
+          ctx.fillStyle = kp[2];
+          ctx.font = `bold ${20 * scale}px sans-serif`;
+          ctx.fillText(kp[1], cx + 12 * scale, cy + 54 * scale);
+        });
+
+      } else if (sceneIndex === 2) {
+        // SCREEN 3: SCANNER
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${14 * scale}px sans-serif`;
+        ctx.fillText("AI CERTIFICATE SCANNER", x + 25 * scale, y + 65 * scale);
+
+        // Viewfinder
+        ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#334155'; ctx.lineWidth = 2;
+        roundRect(ctx, x + 20 * scale, y + 90 * scale, w - 40 * scale, 280 * scale, 16 * scale);
+        ctx.fill(); ctx.stroke();
+
+        // Laser line sweep
+        const sweepY = y + 105 * scale + ((t * 1.5) % 1) * 250 * scale;
+        ctx.strokeStyle = '#34d399'; ctx.lineWidth = 3 * scale;
+        ctx.beginPath();
+        ctx.moveTo(x + 25 * scale, sweepY);
+        ctx.lineTo(x + w - 25 * scale, sweepY);
+        ctx.stroke();
+
+        // Detection Box
+        ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2 * scale;
+        roundRect(ctx, x + 60 * scale, y + 180 * scale, w - 120 * scale, 60 * scale, 6 * scale);
+        ctx.stroke();
+        ctx.fillStyle = '#34d399';
+        ctx.font = `bold ${10 * scale}px sans-serif`;
+        ctx.fillText("DETECTED TAG: V-102-AMMONIA", x + 68 * scale, y + 172 * scale);
+
+        // Extracted Card
+        ctx.fillStyle = '#1e293b';
+        roundRect(ctx, x + 20 * scale, y + 390 * scale, w - 40 * scale, 240 * scale, 14 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#34d399';
+        ctx.font = `bold ${12 * scale}px sans-serif`;
+        ctx.fillText("REAL-TIME OCR EXTRACTION", x + 35 * scale, y + 415 * scale);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${13 * scale}px sans-serif`;
+        ctx.fillText("Sequence: FAB-2026-000001", x + 35 * scale, y + 445 * scale);
+        ctx.fillText("6\" 300# Flanged Gate Valve", x + 35 * scale, y + 475 * scale);
+        ctx.fillText("Hydro Test: 1125 PSI (PASSED)", x + 35 * scale, y + 505 * scale);
+        ctx.fillText("Seat Leakage: 0 Bubbles / min", x + 35 * scale, y + 535 * scale);
+
+        // Auto Register Button
+        ctx.fillStyle = '#10b981';
+        roundRect(ctx, x + 20 * scale, y + 645 * scale, w - 40 * scale, 45 * scale, 12 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${13 * scale}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText("1-Click Auto-Register Certificate", x + w/2, y + 673 * scale);
+        ctx.textAlign = 'left';
+
+      } else {
+        // SCREEN 4 & 5: CERTIFICATE & EXPORTS
+        ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 2;
+        roundRect(ctx, x + 15 * scale, y + 45 * scale, w - 30 * scale, 580 * scale, 12 * scale);
+        ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = `bold ${13 * scale}px sans-serif`;
+        ctx.fillText("FAUJI FERTILIZER COMPANY LTD.", x + 25 * scale, y + 70 * scale);
+
+        ctx.fillStyle = '#061020';
+        roundRect(ctx, x + 25 * scale, y + 85 * scale, w - 50 * scale, 30 * scale, 5 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${11 * scale}px sans-serif`;
+        ctx.fillText("VALVE RECLAMATION CERTIFICATE", x + 35 * scale, y + 105 * scale);
+
+        // Cert specs
+        const specs = [
+          ["Tracking ID:", "FAB-2026-000001"],
+          ["Valve Tag:", "V-102-AMMONIA"],
+          ["Hydro Shell:", "1125 PSI (PASSED)"],
+          ["Seat Test:", "815 PSI (PASSED)"],
+        ];
+        specs.forEach((sp, i) => {
+          ctx.fillStyle = '#64748b';
+          ctx.font = `${10 * scale}px sans-serif`;
+          ctx.fillText(sp[0], x + 30 * scale, y + (135 + i * 32) * scale);
+          ctx.fillStyle = sp[1].includes("PASSED") ? '#059669' : '#0f172a';
+          ctx.font = `bold ${11 * scale}px sans-serif`;
+          ctx.fillText(sp[1], x + 120 * scale, y + (135 + i * 32) * scale);
+        });
+
+        // Download Action Bar
+        ctx.fillStyle = '#f1f5f9'; ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+        roundRect(ctx, x + 25 * scale, y + 270 * scale, w - 50 * scale, 65 * scale, 10 * scale);
+        ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#e11d48';
+        roundRect(ctx, x + 35 * scale, y + 285 * scale, 75 * scale, 36 * scale, 6 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff'; ctx.font = `bold ${10 * scale}px sans-serif`;
+        ctx.fillText("📥 PDF", x + 55 * scale, y + 307 * scale);
+
+        ctx.fillStyle = '#059669';
+        roundRect(ctx, x + 120 * scale, y + 285 * scale, 85 * scale, 36 * scale, 6 * scale);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText("📊 Excel", x + 140 * scale, y + 307 * scale);
+
+        // Toast
+        ctx.fillStyle = '#ecfdf5'; ctx.strokeStyle = '#6ee7b7';
+        roundRect(ctx, x + 25 * scale, y + 350 * scale, w - 50 * scale, 48 * scale, 8 * scale);
+        ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#059669';
+        ctx.font = `bold ${11 * scale}px sans-serif`;
+        ctx.fillText("✓ Saved to Scoped Storage", x + 38 * scale, y + 372 * scale);
+        ctx.fillStyle = '#065f46';
+        ctx.font = `${9 * scale}px sans-serif`;
+        ctx.fillText("MediaStore.Downloads / FFC_Reclamation", x + 38 * scale, y + 388 * scale);
+      }
+
+      // Corner Copyright Badge on all screens
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+      roundRect(ctx, x + w - 165 * scale, y + h - 45 * scale, 150 * scale, 24 * scale, 5 * scale);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#475569';
+      ctx.font = `bold ${10 * scale}px sans-serif`;
+      ctx.fillText("© Muhammad Wasiq Hussain", x + w - 160 * scale, y + h - 29 * scale);
+
+      // Android Bottom Navigation Pill
+      ctx.fillStyle = sceneIndex === 2 ? 'rgba(255,255,255,0.7)' : 'rgba(15,23,42,0.6)';
+      roundRect(ctx, x + w/2 - 55 * scale, y + h - 10 * scale, 110 * scale, 4 * scale, 2 * scale);
+      ctx.fill();
+    }
+
+    function roundRect(c, x, y, width, height, radius) {
+      if (width < 2 * radius) radius = width / 2;
+      if (height < 2 * radius) radius = height / 2;
+      c.beginPath();
+      c.moveTo(x + radius, y);
+      c.arcTo(x + width, y, x + width, y + height, radius);
+      c.arcTo(x + width, y + height, x, y + height, radius);
+      c.arcTo(x, y + height, x, y, radius);
+      c.arcTo(x, y, x + width, y, radius);
+      c.closePath();
+    }
+
+    function formatTime(s) {
+      const mins = Math.floor(s / 60);
+      const secs = Math.floor(s % 60);
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function loop(timestamp) {
+      const dt = (timestamp - lastTimestamp) / 1000;
+      lastTimestamp = timestamp;
+
+      if (isPlaying) {
+        currentTime += dt;
+        if (currentTime >= DURATION) {
+          currentTime = 0;
+          if (isRecording) stopRecording();
+        }
+        seekSlider.value = (currentTime / DURATION) * 1000;
+      }
+
+      timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(DURATION)}`;
+
+      // Update scene pills
+      const pills = document.querySelectorAll('.scene-pill');
+      const curScene = Math.min(5, Math.floor(currentTime / 6.0));
+      pills.forEach((p, idx) => p.className = idx === curScene ? 'scene-pill active' : 'scene-pill');
+
+      drawScreen(currentTime);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    // Recording Logic via MediaRecorder API
+    recordBtn.addEventListener('click', () => {
+      if (!isRecording) {
+        startRecording();
+      } else {
+        stopRecording();
+      }
+    });
+
+    function startRecording() {
+      recordedChunks = [];
+      const stream = canvas.captureStream(60); // 60 FPS
+      const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
+      mediaRecorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 15000000 });
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `FFC_Android_App_Showcase_WasiqHussain_${canvas.width}x${canvas.height}.webm`;
+        a.click();
+        URL.revokeObjectURL(url);
+        recordBtn.textContent = "🔴 Record & Download Video (WebM / MP4)";
+        recordBtn.className = "danger";
+        isRecording = false;
+      };
+
+      mediaRecorder.start();
+      isRecording = true;
+      recordBtn.textContent = "⏹ Stop & Save Video";
+      recordBtn.className = "primary";
+      seekToSec(0);
+      isPlaying = true;
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+    }
+
+    function downloadScreenshot() {
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = `FFC_Showcase_Frame_${Math.round(currentTime)}s.png`;
+      a.click();
+    }
+  </script>
+</body>
+</html>
