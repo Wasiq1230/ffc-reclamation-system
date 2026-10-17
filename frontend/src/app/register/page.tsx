@@ -507,6 +507,12 @@ export default function RegisterPage() {
           </div>
         )}
       </div>
+
+      {/* Clean Minimalist Corner Copyright */}
+      <div className="fixed bottom-2.5 right-3.5 z-20 pointer-events-none select-none text-[10.5px] text-slate-400/80 font-medium tracking-wide flex items-center gap-1">
+        <span>©</span>
+        <span>Muhammad Wasiq Hussain</span>
+      </div>
     </div>
   );
 }

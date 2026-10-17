@@ -86,6 +86,18 @@ export default function AppLayoutShell({ children }: { children: React.ReactNode
         <BottomNav />
       </div>
 
+      {/* Discreet Minimalist Corner Copyright - Desktop */}
+      <div className="hidden md:flex fixed bottom-2.5 right-3.5 z-30 pointer-events-none select-none items-center gap-1 text-[10px] text-slate-400/80 font-medium tracking-wide bg-white/70 backdrop-blur-xs px-2 py-0.5 rounded-md border border-slate-200/50 shadow-2xs">
+        <span>©</span>
+        <span>Muhammad Wasiq Hussain</span>
+      </div>
+
+      {/* Discreet Minimalist Corner Copyright - Mobile (Above bottom nav bar) */}
+      <div className="md:hidden fixed bottom-[4.25rem] right-2.5 z-30 pointer-events-none select-none items-center gap-1 text-[9px] text-slate-400/75 font-medium tracking-tight bg-white/80 backdrop-blur-xs px-1.5 py-0.5 rounded border border-slate-200/40 shadow-2xs">
+        <span>©</span>
+        <span>Muhammad Wasiq Hussain</span>
+      </div>
+
       {/* Global Command Palette */}
       <GlobalSearchModal
         isOpen={isSearchOpen}

@@ -214,6 +214,13 @@ export default function Navigation({ isCollapsed = false, onToggleCollapse }: Na
             <LogOut className="w-4 h-4" />
           </button>
         </div>
+
+        {!isCollapsed && (
+          <div className="mt-2.5 pt-2 border-t border-[#131f37]/70 flex items-center justify-between text-[10px] text-slate-400 font-medium select-none">
+            <span className="font-mono text-slate-400">v2.4</span>
+            <span className="text-slate-400 tracking-tight">© Muhammad Wasiq Hussain</span>
+          </div>
+        )}
       </div>
     </aside>
   );

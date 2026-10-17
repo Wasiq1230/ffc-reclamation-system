@@ -229,7 +229,16 @@ export default function LoginPage() {
           <p className="font-mono text-[10px] text-slate-400">
             FFC Goth Machhi · Sadiqabad · Rahim Yar Khan
           </p>
+          <p className="text-[10px] text-slate-400/90 font-medium tracking-wide pt-1 select-none">
+            © Muhammad Wasiq Hussain
+          </p>
         </div>
+      </div>
+
+      {/* Clean Minimalist Corner Copyright */}
+      <div className="fixed bottom-2.5 right-3.5 z-20 pointer-events-none select-none text-[10.5px] text-slate-400/80 font-medium tracking-wide flex items-center gap-1">
+        <span>©</span>
+        <span>Muhammad Wasiq Hussain</span>
       </div>
     </div>
   );

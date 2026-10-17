@@ -199,6 +199,11 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
               </button>
             </div>
           </div>
+
+          <div className="mt-3 pt-2.5 border-t border-slate-200/70 flex items-center justify-between text-[10px] text-slate-400 font-medium select-none">
+            <span className="font-mono text-slate-400">FFC System v2.4</span>
+            <span className="tracking-tight text-slate-400">© Muhammad Wasiq Hussain</span>
+          </div>
         </div>
       </div>
     </div>
