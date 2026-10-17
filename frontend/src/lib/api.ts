@@ -443,6 +443,94 @@ export const api = {
     }
   },
 
+  // Export Downloads (CSV & Excel) with Authentication & Android Scoped Storage
+  async downloadExportFile(type: "csv" | "excel", params: Record<string, any> = {}) {
+    if (typeof window !== "undefined" && !getAuthToken()) {
+      await ensureAuthenticated();
+    }
+    const token = getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const query = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && v !== "") {
+        query.append(k, String(v));
+      }
+    });
+
+    const queryString = query.toString() ? `?${query.toString()}` : "";
+    const downloadUrl = `${API_BASE}/jobs/export/${type}${queryString}`;
+    const res = await fetch(downloadUrl, { headers });
+
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "");
+      throw new Error(`Failed to export ${type.toUpperCase()} file (${res.status}): ${errText || res.statusText}`);
+    }
+
+    const blob = await res.blob();
+    const today = new Date().toISOString().slice(0, 10);
+    const ext = type === "csv" ? "csv" : "xlsx";
+    const mimeType = type === "csv"
+      ? "text/csv"
+      : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    const safeFileName = `FFC_Reclamation_Register_${today}.${ext}`;
+
+    // 1. Android Native Scoped Storage via AndroidDownloader
+    if (typeof window !== "undefined") {
+      const downloader = (window as any).AndroidDownloader;
+      if (downloader?.saveAndOpenFile) {
+        return new Promise<void>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            try {
+              const base64Data = reader.result as string;
+              downloader.saveAndOpenFile(base64Data, safeFileName, mimeType);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          };
+          reader.onerror = () => reject(new Error(`Failed to process ${type.toUpperCase()} data`));
+          reader.readAsDataURL(blob);
+        });
+      }
+    }
+
+    // 2. Standard Web Browser In-App Download (Desktop & Web)
+    if (typeof window !== "undefined") {
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = safeFileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1000);
+    }
+  },
+
+  async downloadJobsCsv(params: Record<string, any> = {}) {
+    return this.downloadExportFile("csv", params);
+  },
+
+  async downloadJobsExcel(params: Record<string, any> = {}) {
+    return this.downloadExportFile("excel", params);
+  },
+
+  reloadAppFromServer(forceClearCache: boolean = true) {
+    if (typeof window !== "undefined") {
+      const downloader = (window as any).AndroidDownloader;
+      if (downloader?.reloadApp) {
+        downloader.reloadApp(forceClearCache);
+      } else {
+        window.location.reload();
+      }
+    }
+  },
+
   // Reports & Dashboard
   async getDashboard(date_from?: string, date_to?: string) {
     const q = new URLSearchParams();

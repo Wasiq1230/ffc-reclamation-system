@@ -13,7 +13,10 @@ import {
   Wrench,
   Award,
   RefreshCw,
-  Download
+  Download,
+  CheckCircle2,
+  AlertCircle,
+  X
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 
@@ -22,6 +25,39 @@ export default function ReportsPage() {
   const [loading, setLoading] = useState(true);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+
+  // Export State & Notification
+  const [exportingCsv, setExportingCsv] = useState(false);
+  const [exportingExcel, setExportingExcel] = useState(false);
+  const [exportFeedback, setExportFeedback] = useState<{ type: "success" | "error" | "info"; text: string } | null>(null);
+
+  const handleExport = async (type: "csv" | "excel") => {
+    if (type === "csv") setExportingCsv(true);
+    else setExportingExcel(true);
+    setExportFeedback({ type: "info", text: `Generating ${type.toUpperCase()} report for selected date range...` });
+
+    try {
+      await api.downloadExportFile(type, {
+        date_from: dateFrom || undefined,
+        date_to: dateTo || undefined,
+      });
+      setExportFeedback({
+        type: "success",
+        text: `${type.toUpperCase()} report downloaded and saved to your device!`
+      });
+      setTimeout(() => setExportFeedback(null), 4500);
+    } catch (err: any) {
+      console.error(`Export ${type} error:`, err);
+      setExportFeedback({
+        type: "error",
+        text: err.message || `Failed to export ${type.toUpperCase()} report.`
+      });
+      setTimeout(() => setExportFeedback(null), 5000);
+    } finally {
+      if (type === "csv") setExportingCsv(false);
+      else setExportingExcel(false);
+    }
+  };
 
   const fetchReports = async () => {
     setLoading(true);
@@ -57,27 +93,67 @@ export default function ReportsPage() {
         }
         actions={
           <div className="flex items-center gap-2">
-            <a
-              href="http://127.0.0.1:8000/api/jobs/export/csv"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 rounded text-xs font-semibold hover:bg-slate-50 flex items-center gap-1.5 shadow-2xs transition-colors"
+            <button
+              type="button"
+              onClick={() => handleExport("csv")}
+              disabled={exportingCsv || exportingExcel}
+              className="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 rounded text-xs font-semibold hover:bg-slate-50 flex items-center gap-1.5 shadow-2xs transition-colors disabled:opacity-50"
+              title="Download CSV report"
             >
-              <FileText className="w-3.5 h-3.5 text-slate-500" />
-              CSV
-            </a>
-            <a
-              href="http://127.0.0.1:8000/api/jobs/export/excel"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-colors"
+              {exportingCsv ? (
+                <RefreshCw className="w-3.5 h-3.5 text-slate-500 animate-spin" />
+              ) : (
+                <FileText className="w-3.5 h-3.5 text-slate-500" />
+              )}
+              {exportingCsv ? "Exporting..." : "CSV"}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleExport("excel")}
+              disabled={exportingCsv || exportingExcel}
+              className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-colors disabled:opacity-50"
+              title="Download Excel spreadsheet (.xlsx)"
             >
-              <FileSpreadsheet className="w-3.5 h-3.5" />
-              Export Excel
-            </a>
+              {exportingExcel ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <FileSpreadsheet className="w-3.5 h-3.5" />
+              )}
+              {exportingExcel ? "Exporting..." : "Export Excel"}
+            </button>
           </div>
         }
       />
+
+      {/* Export Status Notification */}
+      {exportFeedback && (
+        <div
+          className={`p-3 rounded-xl text-xs font-medium flex items-center justify-between shadow-xs border ${
+            exportFeedback.type === "success"
+              ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+              : exportFeedback.type === "error"
+              ? "bg-rose-50 border-rose-200 text-rose-800"
+              : "bg-sky-50 border-sky-200 text-sky-800"
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            {exportFeedback.type === "success" ? (
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            ) : exportFeedback.type === "error" ? (
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+            ) : (
+              <RefreshCw className="w-4 h-4 text-sky-600 shrink-0 animate-spin" />
+            )}
+            <span>{exportFeedback.text}</span>
+          </div>
+          <button
+            onClick={() => setExportFeedback(null)}
+            className="text-slate-400 hover:text-slate-600 p-0.5"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Date Range Filter Bar */}
       <form

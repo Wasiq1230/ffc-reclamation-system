@@ -18,10 +18,11 @@ import {
   Settings,
   LogOut,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  RefreshCw
 } from "lucide-react";
 import { registerCloseHandler } from "@/lib/modalRegistry";
-import { getStoredUser, removeAuthToken } from "@/lib/api";
+import { getStoredUser, removeAuthToken, api } from "@/lib/api";
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -176,13 +177,27 @@ export default function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
               </div>
             </div>
 
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-semibold transition active:scale-95"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>Sign Out</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  api.reloadAppFromServer(true);
+                }}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-xl text-xs font-semibold transition active:scale-95"
+                title="Sync and load latest server updates"
+              >
+                <RefreshCw className="w-3.5 h-3.5 text-slate-600" />
+                <span>Sync</span>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-semibold transition active:scale-95"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Sign Out</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

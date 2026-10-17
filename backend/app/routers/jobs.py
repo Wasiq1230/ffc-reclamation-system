@@ -405,10 +405,15 @@ def delete_job(
 # ----------------- Exports -----------------
 @router.get("/export/csv")
 def export_csv(
+    search: Optional[str] = None,
     source: Optional[str] = None,
     plant_id: Optional[int] = None,
     department_id: Optional[int] = None,
+    external_customer_id: Optional[int] = None,
     status: Optional[str] = None,
+    priority: Optional[str] = None,
+    date_from: Optional[date] = None,
+    date_to: Optional[date] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -425,25 +430,53 @@ def export_csv(
         query = query.filter(ReclamationJob.plant_id == plant_id)
     if department_id:
         query = query.filter(ReclamationJob.department_id == department_id)
+    if external_customer_id:
+        query = query.filter(ReclamationJob.external_customer_id == external_customer_id)
     if status:
         query = query.filter(ReclamationJob.status == status)
+    if priority:
+        query = query.filter(ReclamationJob.priority == priority)
+    if date_from:
+        query = query.filter(ReclamationJob.date_received >= date_from)
+    if date_to:
+        query = query.filter(ReclamationJob.date_received <= date_to)
 
-    jobs = query.all()
+    if search:
+        search_pattern = f"%{search}%"
+        query = query.filter(
+            (ReclamationJob.tracking_id.ilike(search_pattern)) |
+            (ReclamationJob.notification_no.ilike(search_pattern)) |
+            (ReclamationJob.valve_tag_no.ilike(search_pattern)) |
+            (ReclamationJob.valve_serial_no.ilike(search_pattern)) |
+            (ReclamationJob.valve_description.ilike(search_pattern)) |
+            (ReclamationJob.work_order_ref.ilike(search_pattern))
+        )
+
+    jobs = query.order_by(ReclamationJob.id.desc()).all()
     jobs_data = [format_job_out(j) for j in jobs]
     csv_content = export_jobs_to_csv(jobs_data)
 
+    filename = f"FFC_Reclamation_Register_{date.today()}.csv"
     return Response(
         content=csv_content,
-        media_type="text/csv",
-        headers={"Content-Disposition": f"attachment; filename=FFC_Reclamation_Register_{date.today()}.csv"}
+        media_type="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "Access-Control-Expose-Headers": "Content-Disposition",
+        }
     )
 
 @router.get("/export/excel")
 def export_excel(
+    search: Optional[str] = None,
     source: Optional[str] = None,
     plant_id: Optional[int] = None,
     department_id: Optional[int] = None,
+    external_customer_id: Optional[int] = None,
     status: Optional[str] = None,
+    priority: Optional[str] = None,
+    date_from: Optional[date] = None,
+    date_to: Optional[date] = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -460,15 +493,38 @@ def export_excel(
         query = query.filter(ReclamationJob.plant_id == plant_id)
     if department_id:
         query = query.filter(ReclamationJob.department_id == department_id)
+    if external_customer_id:
+        query = query.filter(ReclamationJob.external_customer_id == external_customer_id)
     if status:
         query = query.filter(ReclamationJob.status == status)
+    if priority:
+        query = query.filter(ReclamationJob.priority == priority)
+    if date_from:
+        query = query.filter(ReclamationJob.date_received >= date_from)
+    if date_to:
+        query = query.filter(ReclamationJob.date_received <= date_to)
 
-    jobs = query.all()
+    if search:
+        search_pattern = f"%{search}%"
+        query = query.filter(
+            (ReclamationJob.tracking_id.ilike(search_pattern)) |
+            (ReclamationJob.notification_no.ilike(search_pattern)) |
+            (ReclamationJob.valve_tag_no.ilike(search_pattern)) |
+            (ReclamationJob.valve_serial_no.ilike(search_pattern)) |
+            (ReclamationJob.valve_description.ilike(search_pattern)) |
+            (ReclamationJob.work_order_ref.ilike(search_pattern))
+        )
+
+    jobs = query.order_by(ReclamationJob.id.desc()).all()
     jobs_data = [format_job_out(j) for j in jobs]
     excel_bytes = export_jobs_to_excel(jobs_data)
 
+    filename = f"FFC_Reclamation_Register_{date.today()}.xlsx"
     return Response(
         content=excel_bytes,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        headers={"Content-Disposition": f"attachment; filename=FFC_Reclamation_Register_{date.today()}.xlsx"}
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "Access-Control-Expose-Headers": "Content-Disposition",
+        }
     )

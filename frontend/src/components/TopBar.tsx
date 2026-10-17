@@ -9,9 +9,10 @@ import {
   Plus,
   ShieldCheck,
   ChevronRight,
-  UserCheck
+  UserCheck,
+  RefreshCw
 } from "lucide-react";
-import { getStoredUser } from "@/lib/api";
+import { getStoredUser, api } from "@/lib/api";
 
 interface TopBarProps {
   onOpenSearch: () => void;
@@ -133,6 +134,17 @@ export default function TopBar({
           <kbd className="hidden sm:inline-flex items-center text-[10px] font-mono px-1.5 py-0.2 bg-white border border-slate-200 rounded text-slate-400 group-hover:border-slate-300 transition">
             ⌘K
           </kbd>
+        </button>
+
+        {/* Sync / Refresh App from Server button */}
+        <button
+          type="button"
+          onClick={() => api.reloadAppFromServer(true)}
+          className="p-2 sm:px-2.5 sm:py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/90 rounded-lg text-xs text-slate-500 hover:text-slate-800 transition shadow-2xs flex items-center gap-1.5"
+          title="Sync latest updates from server"
+        >
+          <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
+          <span className="hidden xl:inline text-[11px] font-medium">Sync</span>
         </button>
 
         {/* Plant status live indicator */}

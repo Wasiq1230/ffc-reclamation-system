@@ -104,9 +104,14 @@ def export_jobs_to_excel(jobs_data: list[dict], title: str = "FFC Valve Reclamat
                 cell.alignment = Alignment(horizontal="center")
 
     # Auto-adjust column widths
-    for col in ws.columns:
-        max_len = max(len(str(cell.value or '')) for cell in col)
-        col_letter = col[0].column_letter
+    from openpyxl.utils import get_column_letter
+    for col_idx, col in enumerate(ws.columns, start=1):
+        max_len = 0
+        for cell in col:
+            # Ignore merged title row (row 1) for column width calculations
+            if cell.row != 1 and cell.value is not None:
+                max_len = max(max_len, len(str(cell.value)))
+        col_letter = get_column_letter(col_idx)
         ws.column_dimensions[col_letter].width = max(max_len + 3, 11)
 
     out = BytesIO()
